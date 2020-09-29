@@ -1,0 +1,16 @@
+1598738915410	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mrright\\AppData\\Local\\Temp\\rust_mozprofile.X7kGoxt7Ykdz"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1598738917330	Marionette	INFO	Listening on port 56094
+1598738917421	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://t1.itsmore.com:62046/Content/jquery/jquery-1.10.2.min.js, line 19: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+JavaScript warning: http://t1.itsmore.com:62046/Content/jquery/jquery-1.10.2.min.js, line 19: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+JavaScript warning: http://t1.itsmore.com:62046/Views/LR_Content/plugin/im/lr-im.js, line 204: unreachable code after return statement
+JavaScript warning: http://t1.itsmore.com:62046/Content/jquery/jquery-1.10.2.min.js, line 19: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+JavaScript warning: http://t1.itsmore.com:62046/Content/jquery/jquery-1.10.2.min.js, line 19: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+JavaScript warning: http://t1.itsmore.com:62046/LR_WorkFlowModule/WfMyTask/CustmerWorkFlowForm?tabIframeId=32405489-c1e4-4b60-947c-f3d84b82fce2&type=1&processId=9bc84dca-61b7-dc5c-8496-8d0760527e2a&taskId=32405489-c1e4-4b60-947c-f3d84b82fce2, line 1218: unreachable code after return statement
+JavaScript warning: http://t1.itsmore.com:62046/LR_WorkFlowModule/WfMyTask/CustmerWorkFlowForm?tabIframeId=32405489-c1e4-4b60-947c-f3d84b82fce2&type=1&processId=9bc84dca-61b7-dc5c-8496-8d0760527e2a&taskId=32405489-c1e4-4b60-947c-f3d84b82fce2, line 1325: unreachable code after return statement
+JavaScript warning: http://t1.itsmore.com:62046/LR_WorkFlowModule/WfMyTask/CustmerWorkFlowForm?tabIframeId=32405489-c1e4-4b60-947c-f3d84b82fce2&type=1&processId=9bc84dca-61b7-dc5c-8496-8d0760527e2a&taskId=32405489-c1e4-4b60-947c-f3d84b82fce2, line 1401: unreachable code after return statement
+JavaScript warning: http://t1.itsmore.com:62046/Views/LR_Content/plugin/im/lr-im.js, line 204: unreachable code after return statement
+JavaScript warning: http://t1.itsmore.com:62046/LR_WorkFlowModule/WfMyTask/CustmerWorkFlowForm?tabIframeId=fd69ee77-afbe-40ed-a797-4eff207cef62&type=1&processId=9bc84dca-61b7-dc5c-8496-8d0760527e2a&taskId=fd69ee77-afbe-40ed-a797-4eff207cef62, line 1218: unreachable code after return statement
+JavaScript warning: http://t1.itsmore.com:62046/LR_WorkFlowModule/WfMyTask/CustmerWorkFlowForm?tabIframeId=fd69ee77-afbe-40ed-a797-4eff207cef62&type=1&processId=9bc84dca-61b7-dc5c-8496-8d0760527e2a&taskId=fd69ee77-afbe-40ed-a797-4eff207cef62, line 1325: unreachable code after return statement
+JavaScript warning: http://t1.itsmore.com:62046/LR_WorkFlowModule/WfMyTask/CustmerWorkFlowForm?tabIframeId=fd69ee77-afbe-40ed-a797-4eff207cef62&type=1&processId=9bc84dca-61b7-dc5c-8496-8d0760527e2a&taskId=fd69ee77-afbe-40ed-a797-4eff207cef62, line 1401: unreachable code after return statement
