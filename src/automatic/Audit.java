@@ -25,8 +25,6 @@ public class Audit {
 		System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "selenium_firefox.log");
 		songhong=new FirefoxDriver();
 		waiter=new WebDriverWait(songhong, 5);
-		login("shenggang","0000");
-		checkFlowStatus("×Ê²ú³ö¿â-Í¯±¦·æ");
 	}
 	public static boolean login(String user,String pwd) {
 		debug=Properties.getParameter("debug")!=null&&Properties.getParameter("debug").equals("true")?true:false;
@@ -44,7 +42,7 @@ public class Audit {
 		}
 		for(int i=0;i<loginTryingCount;i++) {
 			try {
-				songhong.findElement(By.id("lr_username"));					//²éÕÒÓÃ»§ÃûÊäÈë¿ò£¬Èç¹û´æÔÚ·´¸´²éÕÒ£¬Ö±µ½³¬¹ı³¢ÊÔ´ÎÊı£¬Ôò±íÊ¾µÇÂ¼Ê§°Ü
+				songhong.findElement(By.id("lr_username"));					//æŸ¥æ‰¾ç”¨æˆ·åè¾“å…¥æ¡†ï¼Œå¦‚æœå­˜åœ¨åå¤æŸ¥æ‰¾ï¼Œç›´åˆ°è¶…è¿‡å°è¯•æ¬¡æ•°ï¼Œåˆ™è¡¨ç¤ºç™»å½•å¤±è´¥
 				Thread.sleep(1000);
 			}catch(Exception e) {
 				if(debug) {
@@ -56,11 +54,11 @@ public class Audit {
 		return false;
 	}
 	/**
-	 * Í¨¹ıÌá¹©µÄÁ÷³Ì±êÌâ½øÈëÁ÷³ÌÉóºËÒ³
-	 * @param title Á÷³Ì±êÌâ
-	 * @return ÉóºË×´Ì¬
+	 * é€šè¿‡æä¾›çš„æµç¨‹æ ‡é¢˜è¿›å…¥æµç¨‹å®¡æ ¸é¡µ
+	 * @param title æµç¨‹æ ‡é¢˜
+	 * @return å®¡æ ¸çŠ¶æ€
 	 */
-	public static int clickFlowCe(String title) {			//¸ù¾İÁ÷³ÌÃûÑ¡ÖĞ
+	public static int clickFlowCe(String title) {			//æ ¹æ®æµç¨‹åé€‰ä¸­
 		try {
 			Thread.sleep(wait);
 		} catch (InterruptedException e1) {
@@ -78,7 +76,7 @@ public class Audit {
 		try {
 			trying( By.className("jfgrid-data-cell"));
 		}catch(Exception e) {
-			System.err.println("Î´ÕÒµ½ÎªºÎÊı¾İ£¬¸ÃÓÃ»§µÄÈÎÎñÁĞ±íÎ´¿Õ£¡");
+			System.err.println("æœªæ‰¾åˆ°ä¸ºä½•æ•°æ®ï¼Œè¯¥ç”¨æˆ·çš„ä»»åŠ¡åˆ—è¡¨æœªç©ºï¼");
 			return -1;
 		}
 		WebElement worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
@@ -95,7 +93,7 @@ public class Audit {
 							}catch(StaleElementReferenceException e) {
 								if(debug) {
 									e.printStackTrace();
-									System.out.println("ÔªËØ¹ıÆÚ");
+									System.out.println("å…ƒç´ è¿‡æœŸ");
 								}
 								worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
 								li=worksta.findElements(By.className("jfgrid-data-cell"));
@@ -134,7 +132,7 @@ public class Audit {
 			}
 			width++;
 			if(i==li.size()-1) {
-				System.out.println("Î´ÕÒµ½Á÷³Ì£¡");
+				System.out.println("æœªæ‰¾åˆ°æµç¨‹ï¼");
 				return -1;
 			}
 		}
@@ -194,12 +192,12 @@ public class Audit {
 			}
 		}
 		Thread.sleep(wait);
-		while(true) {								//¼ì²âÖØĞÂÌá½»´°¿ÚÊÇ·ñ¹Ø±Õ
+		while(true) {								//æ£€æµ‹é‡æ–°æäº¤çª—å£æ˜¯å¦å…³é—­
 			try {
-				trying(By.className("layui-layer-iframe1"));			//Å×³öÒì³£ËµÃ÷Î´ÕÒµ½ÔªËØÖ±½ÓÌø³öÈç¹ûÕÒµ½Ìá½»¶Ô»°¿òËµÃ÷Ìá½»Î´³É¹¦ÔòÖØĞÂÌá½»
+				trying(By.className("layui-layer-iframe1"));			//æŠ›å‡ºå¼‚å¸¸è¯´æ˜æœªæ‰¾åˆ°å…ƒç´ ç›´æ¥è·³å‡ºå¦‚æœæ‰¾åˆ°æäº¤å¯¹è¯æ¡†è¯´æ˜æäº¤æœªæˆåŠŸåˆ™é‡æ–°æäº¤
 				try {
 					songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
-					System.out.println("·¢ÆğÈËÒÑÖØĞÂÌá½»¡­¡­");
+					System.out.println("å‘èµ·äººå·²é‡æ–°æäº¤â€¦â€¦");
 				}catch(Exception e) {
 					if(debug) {
 						e.printStackTrace();
@@ -212,14 +210,14 @@ public class Audit {
 				break;
 			}
 		}
-		for(int i=0;i<tryingCount;i++) {																								//µÈ´ıÉóºËÍê±Ï·µ»ØÈÎÎñÒ³
+		for(int i=0;i<tryingCount;i++) {																								//ç­‰å¾…å®¡æ ¸å®Œæ¯•è¿”å›ä»»åŠ¡é¡µ
 			String id=null;
 			try {
 				id=songhong.findElement(By.className("active")).getAttribute("id");
 			}catch(StaleElementReferenceException e) {
 				if(debug) {
 					e.printStackTrace();
-					System.out.println("²éÕÒµ½µÄiframe¹ıÆÚ");
+					System.out.println("æŸ¥æ‰¾åˆ°çš„iframeè¿‡æœŸ");
 				}
 				return true;
 			}
@@ -227,9 +225,9 @@ public class Audit {
 				return true;
 			}else {
 				Thread.sleep(1000);
-				System.out.println("ÕıÔÚÖØĞÂÌá½»¡­¡­");
+				System.out.println("æ­£åœ¨é‡æ–°æäº¤â€¦â€¦");
 				if(i==tryingCount-1) {
-					System.out.println(tryingCount+"´ÎµÈ´ıÊ§°Ü£¬¸ÃÁ÷³ÌÎ´ÖªÊÇ·ñÒÑÉóºËÍ¨¹ı");
+					System.out.println(tryingCount+"æ¬¡ç­‰å¾…å¤±è´¥ï¼Œè¯¥æµç¨‹æœªçŸ¥æ˜¯å¦å·²å®¡æ ¸é€šè¿‡");
 				}
 			}
 		}
@@ -271,7 +269,7 @@ public class Audit {
 			}catch(Exception e){
 				if(debug) {
 					e.printStackTrace();
-					System.out.println("jsÖ´ĞĞÊ§°Ü£¬Òş²ØÔªËØÊ§°Ü");
+					System.out.println("jsæ‰§è¡Œå¤±è´¥ï¼Œéšè—å…ƒç´ å¤±è´¥");
 				}
 			}
 		}
@@ -280,8 +278,8 @@ public class Audit {
 		while(true){
 			try{
 			if(accept) {
-			we=songhong.findElement(By.id("verifyType1"));		//Ñ¡ÖĞÍ¬Òâ
-				while(!we.isSelected()) {							//Èç¹ûÎ´Ñ¡ÖĞ¾Í¶à´Î
+			we=songhong.findElement(By.id("verifyType1"));		//é€‰ä¸­åŒæ„
+				while(!we.isSelected()) {							//å¦‚æœæœªé€‰ä¸­å°±å¤šæ¬¡
 					try{
 					we.click();
 					}catch(Exception e){
@@ -289,7 +287,7 @@ public class Audit {
 							e.printStackTrace();
 						}
 					}
-					System.out.println("ÉóºËÖµ£º------------------------¡¾Í¬Òâ¡¿");
+					System.out.println("å®¡æ ¸å€¼ï¼š------------------------ã€åŒæ„ã€‘");
 				}
 				break;
 			}else {
@@ -302,7 +300,7 @@ public class Audit {
 							g.printStackTrace();
 						}
 					}
-					System.out.println("ÉóºËÖµ£º------------------------¡¾²»Í¬Òâ¡¿");
+					System.out.println("å®¡æ ¸å€¼ï¼š------------------------ã€ä¸åŒæ„ã€‘");
 				}
 				break;
 			}
@@ -315,9 +313,9 @@ public class Audit {
 		}
 		songhong.switchTo().defaultContent(); 
 		songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
-		while(true) {								//¼ì²âÖØĞÂÌá½»´°¿ÚÊÇ·ñ¹Ø±Õ
+		while(true) {								//æ£€æµ‹é‡æ–°æäº¤çª—å£æ˜¯å¦å…³é—­
 			try {
-				songhong.findElement(By.className("layui-layer-iframe1"));			//Å×³öÒì³£ËµÃ÷Î´ÕÒµ½ÔªËØÖ±½ÓÌø³öÈç¹ûÕÒµ½Ìá½»¶Ô»°¿òËµÃ÷Ìá½»Î´³É¹¦ÔòÖØĞÂÌá½»
+				songhong.findElement(By.className("layui-layer-iframe1"));			//æŠ›å‡ºå¼‚å¸¸è¯´æ˜æœªæ‰¾åˆ°å…ƒç´ ç›´æ¥è·³å‡ºå¦‚æœæ‰¾åˆ°æäº¤å¯¹è¯æ¡†è¯´æ˜æäº¤æœªæˆåŠŸåˆ™é‡æ–°æäº¤
 				try {
 					songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
 				}catch(Exception e) {
@@ -330,28 +328,28 @@ public class Audit {
 				break;
 			}
 		}
-		for(int i=0;i<tryingCount;i++) {	//µÈ´ıÉóºËÍê±Ï·µ»ØÈÎÎñÒ³
+		for(int i=0;i<tryingCount;i++) {	//ç­‰å¾…å®¡æ ¸å®Œæ¯•è¿”å›ä»»åŠ¡é¡µ
 			String id=null;
 			try {
 				id=songhong.findElement(By.className("active")).getAttribute("id");
 			}catch(Exception e) {
 				if(debug) {
 					e.printStackTrace();
-					System.out.println("ÑéÖ¤ÊÇ·ñÉóºËÍ¨¹ıÊ±£¬activeÅ×³öÒì³££¬ÏêÇé²é¿´Òì³£ÄÚÈİ");
+					System.out.println("éªŒè¯æ˜¯å¦å®¡æ ¸é€šè¿‡æ—¶ï¼ŒactiveæŠ›å‡ºå¼‚å¸¸ï¼Œè¯¦æƒ…æŸ¥çœ‹å¼‚å¸¸å†…å®¹");
 				}
 				continue;
 			}
 			if(id.equals("lr_tab_021a59b0-2589-4f9e-8140-6052177a967c")) {
 				if(debug) {
-					System.out.println("ÉóºË³É¹¦£¬ÒòÎªµ±Ç°¼¤»îframeÓëÈÎÎñÁĞ±íidÏàÍ¬");
+					System.out.println("å®¡æ ¸æˆåŠŸï¼Œå› ä¸ºå½“å‰æ¿€æ´»frameä¸ä»»åŠ¡åˆ—è¡¨idç›¸åŒ");
 				}
-				System.out.println("Á÷³ÌÉóºË³É¹¦");
+				System.out.println("æµç¨‹å®¡æ ¸æˆåŠŸ");
 				return true;
 			}else {
 				Thread.sleep(1000);
-				System.out.println("ÕıÔÚÌá½»Á÷³Ì¡­¡­");
+				System.out.println("æ­£åœ¨æäº¤æµç¨‹â€¦â€¦");
 				if(i==tryingCount-1) {
-					System.out.println(tryingCount+"´ÎµÈ´ıÊ§°Ü£¬¸ÃÁ÷³ÌÎ´ÖªÊÇ·ñÒÑÉóºËÍ¨¹ı");
+					System.out.println(tryingCount+"æ¬¡ç­‰å¾…å¤±è´¥ï¼Œè¯¥æµç¨‹æœªçŸ¥æ˜¯å¦å·²å®¡æ ¸é€šè¿‡");
 				}
 			}
 		}
@@ -396,31 +394,37 @@ public class Audit {
 		return trying(by,false,second);
 	}
 	/**
-	 * »ñÈ¡Á÷³Ì×´Ì¬
+	 * ç”¨äºè·å–å·²åŠä»»åŠ¡ä¸­æŒ‡å®šæµç¨‹æ ‡é¢˜çš„æµç¨‹çŠ¶æ€
 	 * @param flowName
-	 * @return
+	 * @return å¯¹åº”æµç¨‹çš„çŠ¶æ€
+	 * è°ƒç”¨æ—¶æœºï¼šåœ¨æŸä¸ªèŠ‚ç‚¹å®¡æ ¸é€šè¿‡åï¼Œè¯¥æ–¹æ³•ä¼šåœ¨â€œå·²åŠä»»åŠ¡â€ä¸­æŸ¥æ‰¾å¯¹åº”çš„æµç¨‹çš„çŠ¶æ€å¹¶è¿”å›
 	 */
-	static return getFlowStatus(String flowName){
-	try {
-			Thread.sleep(wait);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		JavascriptExecutor js=(JavascriptExecutor)songhong;
-		trying( By.className("lr-menu-item-icon"));
-		js.executeScript("$(\"#021a59b0-2589-4f9e-8140-6052177a967c\").click();");
-		try {
-			Thread.sleep(wait);
-		} catch (InterruptedException e2) {}
+	public static String getFlowStatusAfterAudit(String flowName){
 		trying( By.id("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c"));
 		songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
-		songhong.findElement(By.id("lr_left_tree_3")).click();
+		while (true) {
+		    try {
+				songhong.findElement(By.id("lr_left_tree_3")).click();
+				break;
+			} catch (Exception e) {
+				System.out.println("æŸ¥æ‰¾å…ƒç´ å’Œç‚¹å‡»å¤±è´¥");
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException interruptedException) {
+					interruptedException.printStackTrace();
+				}
+			}
+		}
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		try {
 			trying( By.className("jfgrid-data-cell"));
 		}catch(Exception e) {
-			System.err.println("¸ÃÔ±¹¤ÒÑ°ìÁĞ±íÎª¿Õ!");
-			return false;
+			System.err.println("è¯¥å‘˜å·¥å·²åŠåˆ—è¡¨ä¸ºç©º!");
+			return null;
 		}
 		WebElement worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
 		List<WebElement> li=worksta.findElements(By.className("jfgrid-data-cell"));
@@ -432,12 +436,12 @@ public class Audit {
 							try {
 								ftitle=li.get(i).getText();
 								if(ftitle.equals(flowName)){
-								return li.get(i+2)..getElementsByTagName("span")[0].getText();
+								return li.get(i + 2).findElements(By.tagName("span")).get(0).getText();
 								}
 								break;
 							}catch(StaleElementReferenceException e) {
 								if(debug) {
-									System.out.println("ÔªËØÒÑ¹ıÆÚ£¬½«»áÖØÊÔ£¡");
+									System.out.println("å…ƒç´ å·²è¿‡æœŸï¼Œå°†ä¼šé‡è¯•ï¼");
 								}
 								worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
 								li=worksta.findElements(By.className("jfgrid-data-cell"));
@@ -448,8 +452,8 @@ public class Audit {
 			}
 			width++;
 			if(i==li.size()-1) {
-				System.err.println("Î´ÕÒµ½\""+flowName+"\"Á÷³Ì!!");
-				return false;
+				System.err.println("æœªæ‰¾åˆ°\""+flowName+"\"æµç¨‹!!");
+				return null;
 			}
 		}
 		return null;

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/properties/proerties.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/Collection/Properties.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/Collection/TableFormat.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/RoutineCalculate/Database.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/RoutineCalculate/Main.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/RoutineCalculate/Routine.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/automatic/Audit.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/automatic/AutoFlow.java" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

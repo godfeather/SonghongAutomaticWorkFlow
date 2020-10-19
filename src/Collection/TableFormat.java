@@ -3,7 +3,7 @@ package Collection;
 import java.util.ArrayList;
 
 /**
- * ÓÃÓÚÉú³É±í¸ñ£¬
+ * ç”¨äºç”Ÿæˆè¡¨æ ¼ï¼Œ
  * */
 public class TableFormat {
 	private ArrayList<String> all=new ArrayList<>();
@@ -24,24 +24,24 @@ public class TableFormat {
 		}
 		return comp(re,index);
 	}
-	public ArrayList<ArrayList<String>> comp(String resource,boolean index) {//»ñÈ¡±í¸ñµÄËùÓĞÄÚÈİ
+	public ArrayList<ArrayList<String>> comp(String resource,boolean index) {//è·å–è¡¨æ ¼çš„æ‰€æœ‰å†…å®¹
 		String[] row=resource.split("\n");
-		ArrayList<ArrayList<String>> content=new ArrayList<>();				//ÄÚÈİ±£´æ
+		ArrayList<ArrayList<String>> content=new ArrayList<>();				//å†…å®¹ä¿å­˜
 		int [] count=new int[row.length];
-		for(int i=0;i<row.length;i++) {//±éÀúĞĞ
+		for(int i=0;i<row.length;i++) {//éå†è¡Œ
 
 			ArrayList<String> al=new ArrayList<String>();
 			char[] singleRow=row[i].trim().toCharArray();
-			String map=row[i].trim();//ÉÏĞĞµÄ×Ö¶ÎÓ³Éä
+			String map=row[i].trim();//ä¸Šè¡Œçš„å­—æ®µæ˜ å°„
 			int start=0;
 			int end=0;		
-			boolean have=false;							//ÕÒµ½¡°"¡±·ûºÅµÄ±íÊ¾
-			boolean needComma=false;							//µ±ÕÒµ½"·ûºÅÊ±£¬¾Í»á´¥·¢¸Ã±êÖ¾£¬µ±±êÖ¾ÎªtureÊ±£¬Ëü»á³ÖĞøÖ±µ½ÕÒµ½Comma£¨£¬£©·ûºÅ»òÕßµ½ĞĞÎ²²ÅÊÕÎ²
-			int endPoint=0;										//ÁíÒ»°ë"·ûºÅ³öÏÖµÄÎ»ÖÃ
-			for(int j=0;j<singleRow.length;j++) {			//Í³¼Æ×Ö¶Î¸öÊı
+			boolean have=false;							//æ‰¾åˆ°â€œ"â€ç¬¦å·çš„è¡¨ç¤º
+			boolean needComma=false;							//å½“æ‰¾åˆ°"ç¬¦å·æ—¶ï¼Œå°±ä¼šè§¦å‘è¯¥æ ‡å¿—ï¼Œå½“æ ‡å¿—ä¸ºtureæ—¶ï¼Œå®ƒä¼šæŒç»­ç›´åˆ°æ‰¾åˆ°Commaï¼ˆï¼Œï¼‰ç¬¦å·æˆ–è€…åˆ°è¡Œå°¾æ‰æ”¶å°¾
+			int endPoint=0;										//å¦ä¸€åŠ"ç¬¦å·å‡ºç°çš„ä½ç½®
+			for(int j=0;j<singleRow.length;j++) {			//ç»Ÿè®¡å­—æ®µä¸ªæ•°
 				if(index) {
 					if(j==0&&i!=0) {
-						al.add(""+i);							//±í¸ñÎÄ±¾ĞĞ±àºÅ
+						al.add(""+i);							//è¡¨æ ¼æ–‡æœ¬è¡Œç¼–å·
 						count[i]++;
 					}else if(j==0&&i==0){
 						al.add("NO");
@@ -54,7 +54,7 @@ public class TableFormat {
 					
 						start=j+1;
 						have=true;
-						if(j<singleRow.length-1) {								//Èç¹û"·ûºÅ¾ÍÊÇ±¾ĞĞµÄ×îºóÒ»Î»£¬ÄÇÃ´²»ĞèÒªÑ°ÕÒ½áÊøµÄ¶ººÅ£¨£¬£©
+						if(j<singleRow.length-1) {								//å¦‚æœ"ç¬¦å·å°±æ˜¯æœ¬è¡Œçš„æœ€åä¸€ä½ï¼Œé‚£ä¹ˆä¸éœ€è¦å¯»æ‰¾ç»“æŸçš„é€—å·ï¼ˆï¼Œï¼‰
 							needComma=true;
 						}
 					
@@ -65,7 +65,7 @@ public class TableFormat {
 					}
 					endPoint=j;
 				}
-				if((singleRow[j]==','||singleRow[j]=='£¬')&&have==false) {	//ÒÔ£¬×÷ÎªĞĞ·Ö¸î£¬Í³¼ÆĞĞÊı²¢Í³¼Æ×Ö¶Î×î¶àÖµ
+				if((singleRow[j]==','||singleRow[j]=='ï¼Œ')&&have==false) {	//ä»¥ï¼Œä½œä¸ºè¡Œåˆ†å‰²ï¼Œç»Ÿè®¡è¡Œæ•°å¹¶ç»Ÿè®¡å­—æ®µæœ€å¤šå€¼
 					if(j==0||singleRow[j-1]!='\\'){
 							end=j;
 							
@@ -74,8 +74,8 @@ public class TableFormat {
 							}else {
 								al.add(map.substring(start,end).trim());
 							}
-							needComma=false;								//Ö´ĞĞÁË¸ÃCaseËµÃ÷ÔÚ""ÍâÕÒµ½ÁË¶ººÅ£¬Òò´Ë¼ôµô×Ö·û²¢¹éÁã×¼±¸¿ÉÒÔ²éÕÒÏÂÒ»×éÒıºÅ£¨""£©
-								end=j;										//¾ø²»ÊÇ¶àÓàµÄ¸³Öµ£»ÈôÕÒµ½Ò»¸ö¶ººÅ£¬Ç¡ÇÉĞèÒªÒ»¸ö¶ººÅÊ±£¬ÔòÉÏ±ßµÄ¸³Öµ»á±»¸Ä±ä£¬ÕâÀïµÄ¸³Öµ±£Ö¤ÎŞÂÛ·¢ÉúÊ²Ã´¶¼»á´ÓÏÂÒ»¸ñ¶ººÅ
+							needComma=false;								//æ‰§è¡Œäº†è¯¥Caseè¯´æ˜åœ¨""å¤–æ‰¾åˆ°äº†é€—å·ï¼Œå› æ­¤å‰ªæ‰å­—ç¬¦å¹¶å½’é›¶å‡†å¤‡å¯ä»¥æŸ¥æ‰¾ä¸‹ä¸€ç»„å¼•å·ï¼ˆ""ï¼‰
+								end=j;										//ç»ä¸æ˜¯å¤šä½™çš„èµ‹å€¼ï¼›è‹¥æ‰¾åˆ°ä¸€ä¸ªé€—å·ï¼Œæ°å·§éœ€è¦ä¸€ä¸ªé€—å·æ—¶ï¼Œåˆ™ä¸Šè¾¹çš„èµ‹å€¼ä¼šè¢«æ”¹å˜ï¼Œè¿™é‡Œçš„èµ‹å€¼ä¿è¯æ— è®ºå‘ç”Ÿä»€ä¹ˆéƒ½ä¼šä»ä¸‹ä¸€æ ¼é€—å·
 								count[i]++;
 							start=end+1;
 						
@@ -93,12 +93,12 @@ public class TableFormat {
 						System.out.println("end:"+j);
 						System.out.println("Len:"+map.length());
 						System.out.println("start:"+start);
-						if(j==singleRow.length-1) {												//Èç¹û×îºó³öÏÖ±»×¢ÊÍµôµÄ¶ººÅ£¬Ö±½Ó¿ªÊ¼½Ø£¬·ñÔò½«Ã»ÓĞ»ú»áÔÙ½Ø£¬»áÔì³É¸ñ×ÓÎª¿ÕµÄÇé¿ö
+						if(j==singleRow.length-1) {												//å¦‚æœæœ€åå‡ºç°è¢«æ³¨é‡Šæ‰çš„é€—å·ï¼Œç›´æ¥å¼€å§‹æˆªï¼Œå¦åˆ™å°†æ²¡æœ‰æœºä¼šå†æˆªï¼Œä¼šé€ æˆæ ¼å­ä¸ºç©ºçš„æƒ…å†µ
 							al.add(map.substring(start,j+1));
 						}
 					}		
 				}else if(j==singleRow.length-1){
-					if(needComma&&have==false) {												//Èç¹ûÈ±ÉÙ¶ººÅµ«×Ö·û´®ÒÑ×ßµ½¾¡Í·Ê±£¬´Ó"·ûºÅ´¦½Ø¶Ï£¬¶àÓà²¿·Ö²»Òª£¡£¡
+					if(needComma&&have==false) {												//å¦‚æœç¼ºå°‘é€—å·ä½†å­—ç¬¦ä¸²å·²èµ°åˆ°å°½å¤´æ—¶ï¼Œä»"ç¬¦å·å¤„æˆªæ–­ï¼Œå¤šä½™éƒ¨åˆ†ä¸è¦ï¼ï¼
 						al.add(map.substring(start,endPoint));
 					}else {
 						al.add(map.substring(start,end+1));
@@ -122,19 +122,19 @@ public class TableFormat {
 		}
 		return content;
 	}
-	private ArrayList<ArrayList<String>> format(ArrayList<ArrayList<String>> as) {	//µ÷Õû±í¸ñËùÓĞÄÚÈİË®Æ½¾ÓÖĞ
+	private ArrayList<ArrayList<String>> format(ArrayList<ArrayList<String>> as) {	//è°ƒæ•´è¡¨æ ¼æ‰€æœ‰å†…å®¹æ°´å¹³å±…ä¸­
 		ArrayList<ArrayList<String>> aas=as;
 		
 		int[] size=countMax(aas);
 		ArrayList<ArrayList<String>> all=new ArrayList<>();
 		
 		for(int i=0;i<aas.size();i++) {
-			ArrayList<String> al=aas.get(i);						//Ã¿ÌõÊı¾İ				
+			ArrayList<String> al=aas.get(i);						//æ¯æ¡æ•°æ®				
 			ArrayList<String>arrayli=new ArrayList<String>();		//cell
 			for(int j=0;j<al.size();j++) {
-				int spaceTotal=(size[j]-al.get(j).getBytes().length)+4;		//µ±Ç°×Ö¶ÎĞèÒªÔö¼ÓµÄ¿Õ¸ñ×ÜÊı	
+				int spaceTotal=(size[j]-al.get(j).getBytes().length)+4;		//å½“å‰å­—æ®µéœ€è¦å¢åŠ çš„ç©ºæ ¼æ€»æ•°	
 				
-				int spaceHalf=spaceTotal/2;										//µ±Ç°×Ö¶ÎÁ½±ß¸÷Ìí¼Ó¿Õ¸ñÊıÁ¿
+				int spaceHalf=spaceTotal/2;										//å½“å‰å­—æ®µä¸¤è¾¹å„æ·»åŠ ç©ºæ ¼æ•°é‡
 				String field="";
 				for(int z=0;z<spaceTotal;z++) {
 					
@@ -152,10 +152,10 @@ public class TableFormat {
 		}
 		return all;
 	}
-	private ArrayList<String> getTable(ArrayList<ArrayList<String>> aas){					//´«Èë±í¸ñ½á¹¹µÄ¼¯ºÏ£¬¿ÉÊ¹¸Ã¼¯ºÏ±ä³É±í¸ñ
+	private ArrayList<String> getTable(ArrayList<ArrayList<String>> aas){					//ä¼ å…¥è¡¨æ ¼ç»“æ„çš„é›†åˆï¼Œå¯ä½¿è¯¥é›†åˆå˜æˆè¡¨æ ¼
 		ArrayList<String>title=aas.get(0);
 		String tit="";
-		for(int i=0;i<title.size();i++) {										//Æ´½Ó×Ö¶Î
+		for(int i=0;i<title.size();i++) {										//æ‹¼æ¥å­—æ®µ
 			tit+="+";
 			for(int j=0;j<title.get(i).getBytes().length;j++) {
 				tit+="=";
@@ -171,7 +171,7 @@ public class TableFormat {
 			for(int j=0;j<title.get(i).getBytes().length;j++) {
 				tit+="=";
 			}
-		}			//Í·×Ö¶ÎÆ´½ÓÍê³É
+		}			//å¤´å­—æ®µæ‹¼æ¥å®Œæˆ
 		tit+="+\r\n";
 		all.add(tit);
 		for(int z=1;z<aas.size();z++) {
@@ -181,7 +181,7 @@ public class TableFormat {
 				tit+="|"+row.get(i);
 			}
 			tit+="|\r\n";
-			for(int i=0;i<row.size();i++) {										//Æ´½Ó×Ö¶Î
+			for(int i=0;i<row.size();i++) {										//æ‹¼æ¥å­—æ®µ
 				if(i==0) {
 					tit+="|";
 				}else {
@@ -200,7 +200,7 @@ public class TableFormat {
 		all.clear();
 		return getTable(format(tableModel));
 	}
-	public void showTable() {			//´òÓ¡±í¸ñ
+	public void showTable() {			//æ‰“å°è¡¨æ ¼
 		for(String al:all) {
 			System.out.print(al);
 		}
@@ -223,8 +223,8 @@ public class TableFormat {
 				arrayLengh=row.size();
 			}
 		}
-		int []size=new int[arrayLengh];						//Í³¼Æ×Ö¶ÎÊı
-		for(int i=0;i<aas.size();i++) {					//¸ÃÑ­»·ÓÃÓÚ°ÑÍ³¼ÆÃ¿ÁĞ×î´ó×Ö·ûÊıÒÔ×Ö½Ú½øĞĞÍ³¼Æ£¬±£Ö¤»»ĞĞ¸ñÊ½
+		int []size=new int[arrayLengh];						//ç»Ÿè®¡å­—æ®µæ•°
+		for(int i=0;i<aas.size();i++) {					//è¯¥å¾ªç¯ç”¨äºæŠŠç»Ÿè®¡æ¯åˆ—æœ€å¤§å­—ç¬¦æ•°ä»¥å­—èŠ‚è¿›è¡Œç»Ÿè®¡ï¼Œä¿è¯æ¢è¡Œæ ¼å¼
 			for(int j=0;j<aas.get(i).size();j++) {
 				if(size[j]<aas.get(i).get(j).getBytes().length) {
 					size[j]=aas.get(i).get(j).getBytes().length;
@@ -234,16 +234,16 @@ public class TableFormat {
 		return size;
 	}
 	
-	private void getSuperTable(int MaxWidth,ArrayList<ArrayList<String>> comp) {			//±í¸ñµ¥¸ö×Ö¶ÎµÄ×î´ó×ÖÊıºÍ±í¸ñÓ³Éä
+	private void getSuperTable(int MaxWidth,ArrayList<ArrayList<String>> comp) {			//è¡¨æ ¼å•ä¸ªå­—æ®µçš„æœ€å¤§å­—æ•°å’Œè¡¨æ ¼æ˜ å°„
 		if(MaxWidth>=1) {
 			
 		}else {
-			System.out.println("×Ö¶Î¿í¶È²»ÄÜĞ¡ÓÚ1");
+			System.out.println("å­—æ®µå®½åº¦ä¸èƒ½å°äº1");
 			return;
 		}
 		ArrayList<ArrayList<String>> table=comp;
 		int stand[]=countMax(comp);
-		for(int i=0;i<table.size();i++) {				//Ã¿ĞĞ
+		for(int i=0;i<table.size();i++) {				//æ¯è¡Œ
 			
 		}
 }

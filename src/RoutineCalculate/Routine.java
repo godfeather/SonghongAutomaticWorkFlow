@@ -10,7 +10,7 @@ import java.util.Scanner;
 import Collection.FinalProcess;
 public class Routine {
 	/**
-	 * Êı¾İ¿âÃû³Æ£¬Èçmysql£¬sqlserver
+	 * æ•°æ®åº“åç§°ï¼Œå¦‚mysqlï¼Œsqlserver
 	 */
 	public static String databaseBrand;
 	static Statement form;
@@ -21,18 +21,18 @@ public class Routine {
 		if(cf==null||fromer==null) {
 			return null;
 		}
-		FinalProcess<String, String> finalFlow=new FinalProcess<>();			//cf±íÊ¾calcFlow
-		HashMap<String,Integer> al=new HashMap<String,Integer>();				//±íÊ¾ÉóºËÕßÓëÁ¬ĞøÉóºË´ÎÊıµÄÓ³Éä						
+		FinalProcess<String, String> finalFlow=new FinalProcess<>();			//cfè¡¨ç¤ºcalcFlow
+		HashMap<String,Integer> al=new HashMap<String,Integer>();				//è¡¨ç¤ºå®¡æ ¸è€…ä¸è¿ç»­å®¡æ ¸æ¬¡æ•°çš„æ˜ å°„						
 		for(int i=0;i<cf.length;i++) {
-			if(cf[i].endsWith("²¿ÃÅ×Ü¼à")) {			//±¾²¿ÃÅÉóºË
-				calculate(al, cf, i, fromer, finalFlow, "²¿ÃÅ×Ü¼à");
-			}else if(cf[i].endsWith("Ö´ĞĞ×Ü¼à")) {
-				calculate(al, cf, i, fromer, finalFlow, "Ö´ĞĞ×Ü¼à");
-			}else if(cf[i].endsWith("·Ö¹Ü¸±×Ü")) {
-				calculate(al, cf, i, fromer, finalFlow, "·Ö¹Ü¸±×Ü");
-			}else if(cf[i].endsWith("×Ü¾­Àí")) {
-				String []auditer=getName("×Ü¾­Àí");
-				for(String au:auditer) {					//Ìí¼ÓÊıÁ¿
+			if(cf[i].endsWith("éƒ¨é—¨æ€»ç›‘")) {			//æœ¬éƒ¨é—¨å®¡æ ¸
+				calculate(al, cf, i, fromer, finalFlow, "éƒ¨é—¨æ€»ç›‘");
+			}else if(cf[i].endsWith("æ‰§è¡Œæ€»ç›‘")) {
+				calculate(al, cf, i, fromer, finalFlow, "æ‰§è¡Œæ€»ç›‘");
+			}else if(cf[i].endsWith("åˆ†ç®¡å‰¯æ€»")) {
+				calculate(al, cf, i, fromer, finalFlow, "åˆ†ç®¡å‰¯æ€»");
+			}else if(cf[i].endsWith("æ€»ç»ç†")) {
+				String []auditer=getName("æ€»ç»ç†");
+				for(String au:auditer) {					//æ·»åŠ æ•°é‡
 					if(al.get(au)==null) {
 						al.put(au,1);
 					}else {
@@ -41,9 +41,9 @@ public class Routine {
 				}
 				Iterator<String>s=al.keySet().iterator();
 				String last=null;
-				while(s.hasNext()) {			//ÕÒÑ°ÊÇ·ñÓĞÈËÁ¬ĞøÉóºË
+				while(s.hasNext()) {			//æ‰¾å¯»æ˜¯å¦æœ‰äººè¿ç»­å®¡æ ¸
 					String name=s.next();
-					boolean have=false;				//ÓĞËµÃ÷ÒÑ¾­¸üĞÂ£¬Ã»ÓĞ¸üĞÂÔòÎª²»Á¬Ğø
+					boolean have=false;				//æœ‰è¯´æ˜å·²ç»æ›´æ–°ï¼Œæ²¡æœ‰æ›´æ–°åˆ™ä¸ºä¸è¿ç»­
 					for(int j=0;j<auditer.length;j++) {
 						if(name.equals(auditer[j])) {
 							have=true;
@@ -64,7 +64,7 @@ public class Routine {
 				}
 			}else {
 				String[] auditer=getName(cf[i]);
-				for(String au:auditer) {					//Ìí¼ÓÊıÁ¿
+				for(String au:auditer) {					//æ·»åŠ æ•°é‡
 					if(al.get(au)==null) {
 						al.put(au,1);
 					}else {
@@ -74,9 +74,9 @@ public class Routine {
 				
 				Iterator<String>s=al.keySet().iterator();
 				String last=null;
-				while(s.hasNext()) {			//ÕÒÑ°ÊÇ·ñÓĞÈËÁ¬ĞøÉóºË
+				while(s.hasNext()) {			//æ‰¾å¯»æ˜¯å¦æœ‰äººè¿ç»­å®¡æ ¸
 					String name=s.next();
-					boolean have=false;				//ÓĞËµÃ÷ÒÑ¾­¸üĞÂ£¬Ã»ÓĞ¸üĞÂÔòÎª²»Á¬Ğø
+					boolean have=false;				//æœ‰è¯´æ˜å·²ç»æ›´æ–°ï¼Œæ²¡æœ‰æ›´æ–°åˆ™ä¸ºä¸è¿ç»­
 					for(int j=0;j<auditer.length;j++) {
 						if(name.equals(auditer[j])) {
 							have=true;
@@ -108,23 +108,23 @@ public class Routine {
 		for(int i=0;i<rl.length;i++) {
 			String node=rl[i];
 			int nodelevel=0;
-			if(node.endsWith("²¿ÃÅ×Ü¼à")) {			//Á÷³Ì½ÚµãÎª²¿ÃÅ×Ü¼àÉóºË
+			if(node.endsWith("éƒ¨é—¨æ€»ç›‘")) {			//æµç¨‹èŠ‚ç‚¹ä¸ºéƒ¨é—¨æ€»ç›‘å®¡æ ¸
 				nodelevel=2;
-				if(node.length()==4) {				//Èç¹ûÎª·¢ÆğÈË²¿ÃÅÉóºË
+				if(node.length()==4) {				//å¦‚æœä¸ºå‘èµ·äººéƒ¨é—¨å®¡æ ¸
 					int level=getLevel(fromer);
 					if(level>nodelevel) {
 					}else if(level==nodelevel) {
-						String[]auditer=getName("²¿ÃÅ×Ü¼à", getDepart(fromer));
+						String[]auditer=getName("éƒ¨é—¨æ€»ç›‘", getDepart(fromer));
 						if(auditer.length!=1) {
 							flow.add(rl[i]);
-						}else if(auditer[0].equals(fromer)) {			//µÈÓÚ×Ô¼ºÊ±²»ĞèÒªÉóºË
+						}else if(auditer[0].equals(fromer)) {			//ç­‰äºè‡ªå·±æ—¶ä¸éœ€è¦å®¡æ ¸
 						}else {
 							flow.add(rl[i]);
 						}
 					}else {
 						flow.add(rl[i]);
 					}
-				}else {								//ÆäËü²¿ÃÅÉóºË
+				}else {								//å…¶å®ƒéƒ¨é—¨å®¡æ ¸
 					String nodeDepart=node.substring(0,node.length()-4);
 					String fromerDepart=getDepart(fromer);
 					if(nodeDepart.equals(fromerDepart)) {
@@ -132,20 +132,20 @@ public class Routine {
 						int level=getLevel(fromer);
 						if(level>nodelevel) {
 						}else if(level==nodelevel) {
-							String[]auditer=getName("²¿ÃÅ×Ü¼à", getDepart(fromer));
+							String[]auditer=getName("éƒ¨é—¨æ€»ç›‘", getDepart(fromer));
 							if(auditer.length!=1) {
 								flow.add(rl[i]);
-							}else if(auditer[0].equals(fromer)) {			//µÈÓÚ×Ô¼ºÊ±²»ĞèÒªÉóºË
+							}else if(auditer[0].equals(fromer)) {			//ç­‰äºè‡ªå·±æ—¶ä¸éœ€è¦å®¡æ ¸
 							}else {
 								flow.add(rl[i]);
 							}
 						}else {
 							flow.add(rl[i]);
 						}
-					}else if(fromerDepart.equals("no")){			//²¿ÃÅÎªnoÔòÎª×Ü¾­Àí
-						if(rl[i].endsWith("²¿ÃÅ×Ü¼à")) {
-						}else if(rl[i].endsWith("Ö´ĞĞ×Ü¼à")) {
-						}else if(rl[i].endsWith("·Ö¹Ü¸±×Ü")) {
+					}else if(fromerDepart.equals("no")){			//éƒ¨é—¨ä¸ºnoåˆ™ä¸ºæ€»ç»ç†
+						if(rl[i].endsWith("éƒ¨é—¨æ€»ç›‘")) {
+						}else if(rl[i].endsWith("æ‰§è¡Œæ€»ç›‘")) {
+						}else if(rl[i].endsWith("åˆ†ç®¡å‰¯æ€»")) {
 						}else  {
 							flow.add(rl[i]);
 						}
@@ -153,23 +153,23 @@ public class Routine {
 						flow.add(rl[i]);
 					}
 				}
-			}else if(node.endsWith("Ö´ĞĞ×Ü¼à")) {
+			}else if(node.endsWith("æ‰§è¡Œæ€»ç›‘")) {
 				nodelevel=3;
-				if(node.length()==4) {				//Èç¹ûÎª·¢ÆğÈË²¿ÃÅÉóºË
+				if(node.length()==4) {				//å¦‚æœä¸ºå‘èµ·äººéƒ¨é—¨å®¡æ ¸
 					int level=getLevel(fromer);
 					if(level>nodelevel) {
 					}else if(level==nodelevel) {
-						String[]auditer=getName("Ö´ĞĞ×Ü¼à", getDepart(fromer));
+						String[]auditer=getName("æ‰§è¡Œæ€»ç›‘", getDepart(fromer));
 						if(auditer.length!=1) {
 							flow.add(rl[i]);
-						}else if(auditer[0].equals(fromer)) {			//µÈÓÚ×Ô¼ºÊ±²»ĞèÒªÉóºË
+						}else if(auditer[0].equals(fromer)) {			//ç­‰äºè‡ªå·±æ—¶ä¸éœ€è¦å®¡æ ¸
 						}else {
 							flow.add(rl[i]);
 						}
 					}else {
 						flow.add(rl[i]);
 					}
-				}else {								//ÆäËü²¿ÃÅÉóºË
+				}else {								//å…¶å®ƒéƒ¨é—¨å®¡æ ¸
 					String nodeDepart=node.substring(0,node.length()-4);
 					String fromerDepart=getDepart(fromer);
 					if(nodeDepart.equals(fromerDepart)) {
@@ -177,20 +177,20 @@ public class Routine {
 						int level=getLevel(fromer);
 						if(level>nodelevel) {
 						}else if(level==nodelevel) {
-							String[]auditer=getName("Ö´ĞĞ×Ü¼à", getDepart(fromer));
+							String[]auditer=getName("æ‰§è¡Œæ€»ç›‘", getDepart(fromer));
 							if(auditer.length!=1) {
 								flow.add(rl[i]);
-							}else if(auditer[0].equals(fromer)) {			//µÈÓÚ×Ô¼ºÊ±²»ĞèÒªÉóºË
+							}else if(auditer[0].equals(fromer)) {			//ç­‰äºè‡ªå·±æ—¶ä¸éœ€è¦å®¡æ ¸
 							}else {
 								flow.add(rl[i]);
 							}
 						}else {
 							flow.add(rl[i]);
 						}
-					}else if(fromerDepart.equals("no")){			//²¿ÃÅÎªnoÔòÎª×Ü¾­Àí
-						if(rl[i].endsWith("²¿ÃÅ×Ü¼à")) {
-						}else if(rl[i].endsWith("Ö´ĞĞ×Ü¼à")) {
-						}else if(rl[i].endsWith("·Ö¹Ü¸±×Ü")) {
+					}else if(fromerDepart.equals("no")){			//éƒ¨é—¨ä¸ºnoåˆ™ä¸ºæ€»ç»ç†
+						if(rl[i].endsWith("éƒ¨é—¨æ€»ç›‘")) {
+						}else if(rl[i].endsWith("æ‰§è¡Œæ€»ç›‘")) {
+						}else if(rl[i].endsWith("åˆ†ç®¡å‰¯æ€»")) {
 						}else  {
 							flow.add(rl[i]);
 						}
@@ -198,23 +198,23 @@ public class Routine {
 						flow.add(rl[i]);
 					}
 				}
-			}else if(node.endsWith("·Ö¹Ü¸±×Ü")) {
+			}else if(node.endsWith("åˆ†ç®¡å‰¯æ€»")) {
 				nodelevel=4;
-				if(node.length()==4) {				//Èç¹ûÎª·¢ÆğÈË²¿ÃÅÉóºË
+				if(node.length()==4) {				//å¦‚æœä¸ºå‘èµ·äººéƒ¨é—¨å®¡æ ¸
 					int level=getLevel(fromer);
 					if(level>nodelevel) {
 					}else if(level==nodelevel) {
-						String[]auditer=getName("·Ö¹Ü¸±×Ü", getDepart(fromer));
+						String[]auditer=getName("åˆ†ç®¡å‰¯æ€»", getDepart(fromer));
 						if(auditer.length!=1) {
 							flow.add(rl[i]);
-						}else if(auditer[0].equals(fromer)) {			//µÈÓÚ×Ô¼ºÊ±²»ĞèÒªÉóºË
+						}else if(auditer[0].equals(fromer)) {			//ç­‰äºè‡ªå·±æ—¶ä¸éœ€è¦å®¡æ ¸
 						}else {
 							flow.add(rl[i]);
 						}
 					}else {
 						flow.add(rl[i]);
 					}
-				}else {								//ÆäËü²¿ÃÅÉóºË
+				}else {								//å…¶å®ƒéƒ¨é—¨å®¡æ ¸
 					String nodeDepart=node.substring(0,node.length()-4);
 					String fromerDepart=getDepart(fromer);
 					if(nodeDepart.equals(fromerDepart)) {
@@ -222,20 +222,20 @@ public class Routine {
 						int level=getLevel(fromer);
 						if(level>nodelevel) {
 						}else if(level==nodelevel) {
-							String[]auditer=getName("·Ö¹Ü¸±×Ü", getDepart(fromer));
+							String[]auditer=getName("åˆ†ç®¡å‰¯æ€»", getDepart(fromer));
 							if(auditer.length!=1) {
 								flow.add(rl[i]);
-							}else if(auditer[0].equals(fromer)) {			//µÈÓÚ×Ô¼ºÊ±²»ĞèÒªÉóºË
+							}else if(auditer[0].equals(fromer)) {			//ç­‰äºè‡ªå·±æ—¶ä¸éœ€è¦å®¡æ ¸
 							}else {
 								flow.add(rl[i]);
 							}
 						}else {
 							flow.add(rl[i]);
 						}
-					}else if(fromerDepart.equals("no")){			//²¿ÃÅÎªnoÔòÎª×Ü¾­Àí
-						if(rl[i].endsWith("²¿ÃÅ×Ü¼à")) {
-						}else if(rl[i].endsWith("Ö´ĞĞ×Ü¼à")) {
-						}else if(rl[i].endsWith("·Ö¹Ü¸±×Ü")) {
+					}else if(fromerDepart.equals("no")){			//éƒ¨é—¨ä¸ºnoåˆ™ä¸ºæ€»ç»ç†
+						if(rl[i].endsWith("éƒ¨é—¨æ€»ç›‘")) {
+						}else if(rl[i].endsWith("æ‰§è¡Œæ€»ç›‘")) {
+						}else if(rl[i].endsWith("åˆ†ç®¡å‰¯æ€»")) {
 						}else  {
 							flow.add(rl[i]);
 						}
@@ -243,15 +243,15 @@ public class Routine {
 						flow.add(rl[i]);
 					}
 				}
-			}else if(node.equals("×Ü¾­Àí")) {
+			}else if(node.equals("æ€»ç»ç†")) {
 				nodelevel=5;
 				int level=getLevel(fromer);
 				if(level>nodelevel) {
 				}else if(level==nodelevel) {
-					String[]auditer=getName("×Ü¾­Àí", getDepart(fromer));
+					String[]auditer=getName("æ€»ç»ç†", getDepart(fromer));
 					if(auditer.length!=1) {
 						flow.add(rl[i]);
-					}else if(auditer[0].equals(fromer)) {			//µÈÓÚ×Ô¼ºÊ±²»ĞèÒªÉóºË
+					}else if(auditer[0].equals(fromer)) {			//ç­‰äºè‡ªå·±æ—¶ä¸éœ€è¦å®¡æ ¸
 					}else {
 						flow.add(rl[i]);
 					}
@@ -274,13 +274,13 @@ public class Routine {
 		String ipAndPort=null;
 		String userr=null;
 		String pwdd=null;
-			System.out.println("ÊäÈëIP:PortÁ¬½ÓÊı¾İ¿â");
+			System.out.println("è¾“å…¥IP:Portè¿æ¥æ•°æ®åº“");
 			String msg=in.nextLine().trim();
 				ipAndPort=msg.equals("")?defaultHost:msg;
-			System.out.println("ÓÃ»§Ãû£º");
+			System.out.println("ç”¨æˆ·åï¼š");
 			String msg1=in.nextLine().trim();
 				userr=msg1.equals("")?user:msg1;
-			System.out.println("ÃÜÂë£º");
+			System.out.println("å¯†ç ï¼š");
 				String msg2=in.nextLine().trim();
 				pwdd=msg2.equals("")?pwd:msg2;
 				if("mysql".equals(databaseBrand)) {
@@ -290,12 +290,12 @@ public class Routine {
 				}
 			return form;
 	}
-	public static String[] getProcess(String name) {		//»ñÈ¡Á÷³Ì
+	public static String[] getProcess(String name) {		//è·å–æµç¨‹
 		if(name==null) {
 			System.out.println("error:workflow name must be not null!");
 			return null;
 		}
-		ArrayList<String>ar=new ArrayList<>();//Á÷³Ì
+		ArrayList<String>ar=new ArrayList<>();//æµç¨‹
 		if(form==null) {
 			System.out.println("error:database has not been connect!");
 			return null;
@@ -313,7 +313,7 @@ public class Routine {
 			int start=0;
 			int end=0;
 			for(;;) {
-				int index=flowpro.indexOf("£¬", start);
+				int index=flowpro.indexOf("ï¼Œ", start);
 				if(index!=-1) {
 					end=index;
 					ar.add(flowpro.substring(start,end).trim());
@@ -336,7 +336,7 @@ public class Routine {
 		}
 		return s;
 	}
-	public static int getLevel(String name) {				//»ñÈ¡¸ÃÖ°Ô±µÄ×î´ó¼¶±ğ
+	public static int getLevel(String name) {				//è·å–è¯¥èŒå‘˜çš„æœ€å¤§çº§åˆ«
 		try {
 			ResultSet r=form.executeQuery("select level from staff where name='"+name+"'");
 			boolean have=false;
@@ -349,7 +349,7 @@ public class Routine {
 				}
 			}
 			if(!have) {
-				System.err.println("error£º[select level from staff where name='"+name+"']Óï¾äÎ´ÕÒµ½ÈÎºÎĞĞ£¡");
+				System.err.println("errorï¼š[select level from staff where name='"+name+"']è¯­å¥æœªæ‰¾åˆ°ä»»ä½•è¡Œï¼");
 
 			}
 			r.close();
@@ -360,7 +360,7 @@ public class Routine {
 		}
 		return -1;
 	}
-	public static String[] getName(String post,String depart) {					//Í¨¹ı¸ÚÎ»ºÍ²¿ÃÅ»ñÈ¡Ö°Ô±ÁĞ±í
+	public static String[] getName(String post,String depart) {					//é€šè¿‡å²—ä½å’Œéƒ¨é—¨è·å–èŒå‘˜åˆ—è¡¨
 		try {
 			ResultSet rs=form.executeQuery("select name from staff where post='"+post+"' and department='"+depart+"';");
 			ArrayList<String>a=new ArrayList<>();
@@ -370,7 +370,7 @@ public class Routine {
 				have=true;
 			}
 			if(!have) {
-				System.err.println("error£º[select name from staff where post='"+post+"' and department='"+depart+"']Óï¾äÎ´ÕÒµ½ÈÎºÎĞĞ£¡");
+				System.err.println("errorï¼š[select name from staff where post='"+post+"' and department='"+depart+"']è¯­å¥æœªæ‰¾åˆ°ä»»ä½•è¡Œï¼");
 			}
 			String str[]=new String[a.size()];
 			for(int i=0;i<str.length;i++) {
@@ -384,7 +384,7 @@ public class Routine {
 		}
 		return null;
 	}
-	public static String getDepart(String name) {								//Í¨¹ıĞÕÃû»ñÈ¡Ô±¹¤µÄ²¿ÃÅ
+	public static String getDepart(String name) {								//é€šè¿‡å§“åè·å–å‘˜å·¥çš„éƒ¨é—¨
 		try {
 			ResultSet rs=form.executeQuery("select department from staff where name='"+name+"'");
 			rs.next();
@@ -404,7 +404,7 @@ public class Routine {
 		}
 		return null;
 	}
-	public static String[] getName(String post) {					//Í¨¹ı¸ÚÎ»²éÑ¯Ö°Ô±
+	public static String[] getName(String post) {					//é€šè¿‡å²—ä½æŸ¥è¯¢èŒå‘˜
 		try {
 			ResultSet rs=form.executeQuery("select name from staff where post='"+post+"';");
 			ArrayList<String>a=new ArrayList<>();
@@ -414,7 +414,7 @@ public class Routine {
 				have=true;
 			}
 			if(!have) {
-				System.out.println("¾¯¸æ£º[select name from staff where post='"+post+"']Óï¾äÎ´ÕÒµ½ÈÎºÎĞĞ£¡");
+				System.out.println("è­¦å‘Šï¼š[select name from staff where post='"+post+"']è¯­å¥æœªæ‰¾åˆ°ä»»ä½•è¡Œï¼");
 			}
 			String str[]=new String[a.size()];
 			for(int i=0;i<str.length;i++) {
@@ -431,7 +431,7 @@ public class Routine {
 	public static void calculate(HashMap<String, Integer> al,String[] cf,int i,String fromer,FinalProcess<String , String > finalFlow,String post) {
 		if(cf[i].length()==4) {
 			String []auditer=getName(post, getDepart(fromer));
-			for(String au:auditer) {					//Ìí¼ÓÊıÁ¿
+			for(String au:auditer) {					//æ·»åŠ æ•°é‡
 				if(au.equals(fromer)) {
 					
 				}else {
@@ -444,9 +444,9 @@ public class Routine {
 			}
 			Iterator<String> s=al.keySet().iterator();
 			String last=null;
-			while(s.hasNext()) {			//ÕÒÑ°ÊÇ·ñÓĞÈËÁ¬ĞøÉóºË
+			while(s.hasNext()) {			//æ‰¾å¯»æ˜¯å¦æœ‰äººè¿ç»­å®¡æ ¸
 				String name=s.next();
-				boolean have=false;				//ÓĞËµÃ÷ÒÑ¾­¸üĞÂ£¬Ã»ÓĞ¸üĞÂÔòÎª²»Á¬Ğø
+				boolean have=false;				//æœ‰è¯´æ˜å·²ç»æ›´æ–°ï¼Œæ²¡æœ‰æ›´æ–°åˆ™ä¸ºä¸è¿ç»­
 				for(int j=0;j<auditer.length;j++) {
 					if(name.equals(auditer[j])) {
 						have=true;
@@ -465,9 +465,9 @@ public class Routine {
 						finalFlow.put(cf[i],key);
 				}
 			}
-		}else {				//ÆäËü²¿ÃÅÉóºË
+		}else {				//å…¶å®ƒéƒ¨é—¨å®¡æ ¸
 			String []auditer=getName(post, cf[i].substring(0,cf[i].length()-4));
-			for(String au:auditer) {					//Ìí¼ÓÊıÁ¿
+			for(String au:auditer) {					//æ·»åŠ æ•°é‡
 				if(al.get(au)==null) {
 					al.put(au,1);
 				}else {
@@ -476,8 +476,8 @@ public class Routine {
 			}
 			Iterator<String>s=al.keySet().iterator();
 			String last=null;
-			while(s.hasNext()) {			//ÕÒÑ°ÊÇ·ñÓĞÈËÁ¬ĞøÉóºË
-				boolean have=false;				//ÓĞËµÃ÷ÒÑ¾­¸üĞÂ£¬Ã»ÓĞ¸üĞÂÔòÎª²»Á¬Ğø
+			while(s.hasNext()) {			//æ‰¾å¯»æ˜¯å¦æœ‰äººè¿ç»­å®¡æ ¸
+				boolean have=false;				//æœ‰è¯´æ˜å·²ç»æ›´æ–°ï¼Œæ²¡æœ‰æ›´æ–°åˆ™ä¸ºä¸è¿ç»­
 				String name=s.next();
 				for(int j=0;j<auditer.length;j++) {
 					
@@ -501,7 +501,7 @@ public class Routine {
 		}
 		
 	}
-	private  ArrayList<String[]> query(String sql) {			//Î´Íê
+	private  ArrayList<String[]> query(String sql) {			//æœªå®Œ
 		if(!sql.toLowerCase().startsWith("select")) {
 			System.out.println("error:can't execute the statement!!");
 			return null;
@@ -511,7 +511,7 @@ public class Routine {
 			result=form.executeQuery(sql);
 			
 		} catch (SQLException e) {
-			System.out.println("¾¯¸æ£º"+e.getMessage());
+			System.out.println("è­¦å‘Šï¼š"+e.getMessage());
 			return null;
 		}
 		return null;

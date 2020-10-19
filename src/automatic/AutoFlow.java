@@ -3,6 +3,7 @@ package automatic;
 import java.util.List;
 import java.util.Scanner;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -14,24 +15,24 @@ public class AutoFlow {
 	public static int rejectStep=1;
 	public static void autoFlow(String flowName,String fromer,String flowTitle,int rejectStep) {
 		FinalProcess<String,String> workFlow=Routine.finalFlow(Routine.calcFlow(Routine.getProcess(flowName), fromer),fromer);
-		workFlow.put(0,"·¢ÆğÕß",fromer); 
+		workFlow.put(0,"å‘èµ·è€…",fromer); 
 		long start =System.currentTimeMillis();
 		plantFlowCore(flowTitle,rejectStep, workFlow);
 		long end=System.currentTimeMillis();
 		long cast=end-start;
-		String timeunite="ºÁÃë";
+		String timeunite="æ¯«ç§’";
 		if(cast>=1000) {
 			cast=cast/1000;
-			timeunite="Ãë";
+			timeunite="ç§’";
 		}
 		if(cast>=60) {
 			cast=cast/60;
-			timeunite="·ÖÖÓ";
+			timeunite="åˆ†é’Ÿ";
 		}
-		System.out.println(">>>>>>>>²âÊÔ½áÊø£¬±¾´ÎÏûºÄÊ±¼ä£º"+cast+timeunite);
-		System.out.println("\nÁ÷³Ì±êÌâ£º"+flowName);
-		System.out.println("\n·¢ÆğÕß£º"+fromer);
-		System.out.println("\nÁ÷³ÌÃû³Æ£º"+flowName);
+		System.out.println(">>>>>>>>æµ‹è¯•ç»“æŸï¼Œæœ¬æ¬¡æ¶ˆè€—æ—¶é—´ï¼š"+cast+timeunite);
+		System.out.println("\næµç¨‹æ ‡é¢˜ï¼š"+flowTitle);
+		System.out.println("\nå‘èµ·è€…ï¼š"+fromer);
+		System.out.println("\næµç¨‹åç§°ï¼š"+flowName);
 		System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n\n\n");
 	}
 	public static  void plantFlowCore(String flowTitle,int from,FinalProcess<String,String> workFlow){
@@ -61,26 +62,27 @@ public class AutoFlow {
 		}
 		String fromaccount=Routine.getAccountByName(sh.getValue(0));
 		if(fromaccount==null) {
-			System.out.println("¾¯¸æ£ºÎ´ÕÒµ½¸Ã·¢ÆğÈË£¬ÇëÖØÊÔ");
+			System.out.println("è­¦å‘Šï¼šæœªæ‰¾åˆ°è¯¥å‘èµ·äººï¼Œè¯·é‡è¯•");
 			return;
 		}
 		for(int i=1;i<sh.size();i++) {
 			boolean arrave=false;
-			String auditer=Routine.getAccountByName(sh.getValue(i));		//»ñÈ¡ÉóºËÕßµÄÕËºÅ
-			if(sh.getValue(i).equals("ÉêÇëÈË")) {
+			String auditer=Routine.getAccountByName(sh.getValue(i));		//è·å–å®¡æ ¸è€…çš„è´¦å·
+			if(sh.getValue(i).equals("ç”³è¯·äºº")) {
 				auditer=fromaccount;
 			}
-			System.out.println(sh.getKey(i)+"----------------------------------"+sh.getValue(i)+"¿ªÊ¼ÉóºË");
+			System.out.println(sh.getKey(i)+"----------------------------------"+sh.getValue(i)+"å¼€å§‹å®¡æ ¸");
 			boolean log_1=Audit.login(auditer,Properties.getParameter("globalPwd") );
 			arrave=log_1;
 			int log_2=-1;
+
 			if(log_1) {
 				log_2=Audit.clickFlowCe(flowTitle);
 			}else{
-				System.out.println("ÓÃ»§µÇÂ¼Ê§°Ü£¬ÇëÊÖ¶¯µÇÂ¼£¬Íê³ÉºóÔÙÊäÈë¡°done¡±¼ÌĞø");
+				System.out.println("ç”¨æˆ·ç™»å½•å¤±è´¥ï¼Œè¯·æ‰‹åŠ¨ç™»å½•ï¼Œå®Œæˆåå†è¾“å…¥â€œdoneâ€ç»§ç»­");
 				boolean continu=manual();
 				if(!continu){
-					System.out.println("Á÷³ÌÒÑÖĞ¶Ï£¡");	
+					System.out.println("æµç¨‹å·²ä¸­æ–­ï¼");	
 					return;
 				}
 				try {
@@ -105,10 +107,10 @@ public class AutoFlow {
 					Audit.clickFlowCe(flowTitle);
 					boolean b=Audit.resubmit(flowTitle);
 					if(!b) {
-						System.out.println("Á÷³ÌÎ´³É¹¦ÉóºË£¬ÇëÊÖ¶¯ÉóºË£¬Íê³ÉºóÔÚÊäÈë¡°done¡±¼ÌĞø");
+						System.out.println("æµç¨‹æœªæˆåŠŸå®¡æ ¸ï¼Œè¯·æ‰‹åŠ¨å®¡æ ¸ï¼Œå®Œæˆååœ¨è¾“å…¥â€œdoneâ€ç»§ç»­");
 						boolean continu=manual();
 						if(!continu) {
-							System.out.println("Á÷³ÌÒÑÖĞ¶Ï£¡");
+							System.out.println("æµç¨‹å·²ä¸­æ–­ï¼");
 							return;
 						}
 						try {
@@ -127,15 +129,15 @@ public class AutoFlow {
 				}else {
 					boolean b=Audit.accept(true,flowTitle);
 					if(!b) {
-						System.out.println("Á÷³ÌÎ´³É¹¦ÉóºË£¬ÇëÊÖ¶¯ÉóºË£¬Íê³ÉºóÔÚÊäÈë¡°done¡±¼ÌĞø");
-						boolean continu=manual();
-						if(!continu) {
-							System.out.println("Á÷³ÌÒÑÖĞ¶Ï£¡");
+						System.out.println("æµç¨‹æœªæˆåŠŸå®¡æ ¸ï¼Œè¯·æ‰‹åŠ¨å®¡æ ¸ï¼Œå®Œæˆååœ¨è¾“å…¥â€œdoneâ€ç»§ç»­");
+						boolean continu = manual();
+						if(! continu) {
+							System.out.println("æµç¨‹å·²ä¸­æ–­ï¼");
 							return;
 						}
 						try {
 							Audit.songhong.close();
-						}catch(Exception e) {}
+						}catch(Exception e) { }
 						if(driverType==null) {
 							
 						}else if(driverType.equals("chrome")){
@@ -148,10 +150,10 @@ public class AutoFlow {
 					}
 				}
 			}else{
-				System.out.println("Á÷³ÌÉóºË¹ÊÕÏ£¬ÇëÊÖ¶¯ÉóºË£¬Íê³ÉºóÔÚÊäÈë¡°done¡±¼ÌĞø");
+				System.out.println("æµç¨‹å®¡æ ¸æ•…éšœï¼Œè¯·æ‰‹åŠ¨å®¡æ ¸ï¼Œå®Œæˆååœ¨è¾“å…¥â€œdoneâ€ç»§ç»­");
 				boolean continu=manual();
 				if(!continu) {
-					System.out.println("Á÷³ÌÒÑÖĞ¶Ï£¡");
+					System.out.println("æµç¨‹å·²ä¸­æ–­ï¼");
 					return;
 				}
 				try {
@@ -167,35 +169,45 @@ public class AutoFlow {
 				Audit.waiter= new WebDriverWait(Audit.songhong,5);
 				continue;
 			}
+			System.out.println("æ­£åœ¨æ ¡éªŒæµç¨‹æ˜¯å¦ç»“æŸâ€¦â€¦");
+			String status = Audit.getFlowStatusAfterAudit(flowTitle);
+			System.out.println("æµç¨‹å®¡æ ¸ç»“æŸï¼Œæ ¡éªŒæµç¨‹çŠ¶æ€æ˜¯å¦æ˜¾ç¤ºå·²ç»“æŸï¼šã€" + status + "ã€‘");
+			if ("ç»“æŸ".equals(status)) {
+				System.out.println("æ£€éªŒç»“æœï¼šæµç¨‹å·²ç»“æŸ");
+			} else {
+				System.err.println("æ£€éªŒç»“æœï¼šæµç¨‹æœªç»“æŸ!");
+			}
 		}
+
+
 	}
 	public static void manualFlow(String name,String flowString,int rejectStep) {
-		if(flowString.contains("£¬")) {
-		String[]str=flowString.split("£¬");
+		if(flowString.contains("ï¼Œ")) {
+		String[]str=flowString.split("ï¼Œ");
 		FinalProcess<String,String> proc=new FinalProcess<String, String>();
 		for(int i=0;i<str.length;i++) {
-			proc.put("ÊÖ¶¯Á÷³Ì",str[i]);
+			proc.put("æ‰‹åŠ¨æµç¨‹",str[i]);
 		}
 long start =System.currentTimeMillis();
 		plantFlowCore(name,rejectStep,proc);
 		long end=System.currentTimeMillis();
 		long cast=end-start;
-		String timeunite="ºÁÃë";
+		String timeunite="æ¯«ç§’";
 		if(cast>=1000) {
 			cast=cast/1000;
-			timeunite="Ãë";
+			timeunite="ç§’";
 		}
 		if(cast>=60) {
 			cast=cast/60;
-			timeunite="·ÖÖÓ";
+			timeunite="åˆ†é’Ÿ";
 		}
-		System.out.println("\t\t¡¾²âÊÔ½áÊø¡¿¡¿£¬±¾´ÎÏûºÄÊ±¼ä£º"+cast+timeunite);
-		System.out.println("\n±¾´ÎÁ÷³ÌÉóºËµÄÃ¿¸ö½Úµã¾ùÓÉ¸Ã´ÎÈÎÎñµÄÖ´ĞĞÕßÌá¹©£¬²âÊÔ½Å±¾²¢Î´¶ÔÌá¹©µÄÁ÷³Ì½Úµã½øĞĞĞ£ºË£¬"
-				+ "\n¹Ê²»ÄÜ×÷ÎªÁ÷³Ì½ÚµãÕıÈ·µÄÒÀ¾İ£¬ÈôÄúÈ·±£Á÷³Ì½ÚµãÕıÈ·²¢ÇÒÔÚ±¾´ÎÈÎÎñÖ´ĞĞÍê³Éºó¼ì²éÁË¸ÃÁ÷³Ì×´Ì¬ÒÑ±äÎª¡°½áÊø¡±£¬"
-				+ "\nÔò¿ÉÒÔÈÏÎª¸Ã´ÎÁ÷³Ì½ÚµãÕıÈ·£¨ÄúĞèÒªÈ·±££©£¬²¢ÇÒÁ÷³Ì¿ÉÒÔÕı³£½áÊø£¨±¾´ÎÈÎÎñÒÑËµÃ÷£©");
+		System.out.println("\t\tã€æµ‹è¯•ç»“æŸã€‘ã€‘ï¼Œæœ¬æ¬¡æ¶ˆè€—æ—¶é—´ï¼š"+cast+timeunite);
+		System.out.println("\næœ¬æ¬¡æµç¨‹å®¡æ ¸çš„æ¯ä¸ªèŠ‚ç‚¹å‡ç”±è¯¥æ¬¡ä»»åŠ¡çš„æ‰§è¡Œè€…æä¾›ï¼Œæµ‹è¯•è„šæœ¬å¹¶æœªå¯¹æä¾›çš„æµç¨‹èŠ‚ç‚¹è¿›è¡Œæ ¡æ ¸ï¼Œ"
+				+ "\næ•…ä¸èƒ½ä½œä¸ºæµç¨‹èŠ‚ç‚¹æ­£ç¡®çš„ä¾æ®ï¼Œè‹¥æ‚¨ç¡®ä¿æµç¨‹èŠ‚ç‚¹æ­£ç¡®å¹¶ä¸”åœ¨æœ¬æ¬¡ä»»åŠ¡æ‰§è¡Œå®Œæˆåæ£€æŸ¥äº†è¯¥æµç¨‹çŠ¶æ€å·²å˜ä¸ºâ€œç»“æŸâ€ï¼Œ"
+				+ "\nåˆ™å¯ä»¥è®¤ä¸ºè¯¥æ¬¡æµç¨‹èŠ‚ç‚¹æ­£ç¡®ï¼ˆæ‚¨éœ€è¦ç¡®ä¿ï¼‰ï¼Œå¹¶ä¸”æµç¨‹å¯ä»¥æ­£å¸¸ç»“æŸï¼ˆæœ¬æ¬¡ä»»åŠ¡å·²è¯´æ˜ï¼‰");
 		System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n\n\n");
 		}else {
-			System.out.println("Á÷³Ì¸ñÊ½ÎŞĞ§,ÇëÖØÊÔ!!");
+			System.out.println("æµç¨‹æ ¼å¼æ— æ•ˆ,è¯·é‡è¯•!!");
 		}
 	}
 	public static boolean manual() {

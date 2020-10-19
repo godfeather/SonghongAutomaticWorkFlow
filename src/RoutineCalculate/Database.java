@@ -40,7 +40,7 @@ public class Database {
 		}
 		try {
 			con=DriverManager.getConnection(url,user,pwd);
-		System.out.println("msg£ºsuccess to connect mysql!");
+		System.out.println("msgï¼šsuccess to connect mysql!");
 		} catch (SQLException e) {
 			System.out.println("msg:"+e.getMessage());
 			return null;

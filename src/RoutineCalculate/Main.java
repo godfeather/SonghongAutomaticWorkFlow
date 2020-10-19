@@ -11,16 +11,16 @@ public class Main {
 		System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "selenium_firefox.log");
 		Properties.reload();
 		Properties.loadProperties();
-		Routine.connect();//Á´½ÓÊı¾İ¿â
+		Routine.connect();//é“¾æ¥æ•°æ®åº“
 		if(Routine.form==null) {
 			return;
 		}
 		Scanner sc=new Scanner(System.in);
 		while(true) {
-			System.out.println("ÊäÈë±àºÅÊ¹ÓÃ¹¦ÄÜ£º");
-			System.out.println("[1]---Á÷³Ì¼ÆËã");
-			System.out.println("[2]---Á÷³Ì×Ô¶¯");
-			System.out.println("[3]---ÊÖ¶¯Á÷³Ì");
+			System.out.println("è¾“å…¥ç¼–å·ä½¿ç”¨åŠŸèƒ½ï¼š");
+			System.out.println("[1]---æµç¨‹è®¡ç®—");
+			System.out.println("[2]---æµç¨‹è‡ªåŠ¨");
+			System.out.println("[3]---æ‰‹åŠ¨æµç¨‹");
 			String b=read(sc);
 			if(b==null) {
 				break;
@@ -36,52 +36,52 @@ public class Main {
 		
 	}
 	public static void manual() {
-		System.out.println("°´Ë³ĞòÊäÈëÊÖ¶¯¼ÆËã³öµÄÁ÷³Ì½ÚµãÖĞÉóºËÕßµÄÖĞÎÄÃû³ÆÊ¹ÓÃ¶ººÅ\",\"¸ô¿ª£»\nÍ¨¹ıÁ÷³Ì±êÌâÈ·¶¨ĞèÒªÔÚÒ³ÃæÖĞ²éÕÒÉóºËµÄÁ÷³Ì\n\n");
-		System.out.println("ÇëÊäÈëÁ÷³Ì±êÌâÓÃÓÚÈ·¶¨Ò³ÃæÉÏÁ÷³ÌÃû³Æ£º");
+		System.out.println("æŒ‰é¡ºåºè¾“å…¥æ‰‹åŠ¨è®¡ç®—å‡ºçš„æµç¨‹èŠ‚ç‚¹ä¸­å®¡æ ¸è€…çš„ä¸­æ–‡åç§°ä½¿ç”¨é€—å·\",\"éš”å¼€ï¼›\né€šè¿‡æµç¨‹æ ‡é¢˜ç¡®å®šéœ€è¦åœ¨é¡µé¢ä¸­æŸ¥æ‰¾å®¡æ ¸çš„æµç¨‹\n\n");
+		System.out.println("è¯·è¾“å…¥æµç¨‹æ ‡é¢˜ç”¨äºç¡®å®šé¡µé¢ä¸Šæµç¨‹åç§°ï¼š");
 		Scanner sc=new Scanner(System.in);
 		String workflowTitle=read(sc);
 		if(workflowTitle==null) {
-			System.out.println("ÒÑÈ¡Ïû");
+			System.out.println("å·²å–æ¶ˆ");
 			return;
 		}
-		System.out.println("ÇëÊäÈëÁ÷³ÌĞòÁĞÊ¹ÓÃ¶ººÅ¸ô¿ª£º");
+		System.out.println("è¯·è¾“å…¥æµç¨‹åºåˆ—ä½¿ç”¨é€—å·éš”å¼€ï¼š");
 		String workflow=read(sc);
 		if(workflow==null) {
-			System.out.println("ÒÑÈ¡Ïû");
+			System.out.println("å·²å–æ¶ˆ");
 			return;
 		}
 		AutoFlow.manualFlow(workflowTitle,workflow,-1);
 	}
 	public static void automatic() {
 		int abortFrom=10000;
-		System.out.println("·¢ÆğÕß£º");
+		System.out.println("å‘èµ·è€…ï¼š");
 		Scanner sc=new Scanner(System.in);
 		String fromer=read(sc);
 		if(fromer==null) {
-			System.out.println("ÒÑÈ¡Ïû");
+			System.out.println("å·²å–æ¶ˆ");
 			return;
 		}
-		System.out.println("Á÷³ÌÃû³Æ£º");
+		System.out.println("æµç¨‹åç§°ï¼š");
 		String flowName=read(sc);
 		if(flowName==null) {
-			System.out.println("ÒÑÈ¡Ïû");
+			System.out.println("å·²å–æ¶ˆ");
 			return;
 		}
-		System.out.println("Á÷³Ì±êÌâ£º");
+		System.out.println("æµç¨‹æ ‡é¢˜ï¼š");
 		String CustomflowName=read(sc);
 		if(CustomflowName==null) {
-			System.out.println("ÒÑÈ¡Ïû");
+			System.out.println("å·²å–æ¶ˆ");
 			return;
 		}
-		System.out.println("ÊÇ·ñÀ©Õ¹¹¦ÄÜ?    y--ÊÇ");
+		System.out.println("æ˜¯å¦æ‰©å±•åŠŸèƒ½?    y--æ˜¯");
 		String advance=read(sc);
 		boolean testAbort=false;
 		if(advance==null) {
-			System.out.println("ÒÑÈ¡Ïû");
+			System.out.println("å·²å–æ¶ˆ");
 			return;
 		}else if(advance.equalsIgnoreCase("y")){
 			
-			System.out.println("´ÓÄÄ¸ö½Úµã¿ªÊ¼²µ»Ø£¿Ä¬ÈÏ´Ó0¿ªÊ¼£¬-1±íÊ¾²µ»Ø×îºóÒ»¸ö½Úµã£¬Öµ>=Á÷³Ì¼¯ºÏ³¤¶È±íÊ¾²»²µ»Ø,»Ø³µÌø¹ı£»");
+			System.out.println("ä»å“ªä¸ªèŠ‚ç‚¹å¼€å§‹é©³å›ï¼Ÿé»˜è®¤ä»0å¼€å§‹ï¼Œ-1è¡¨ç¤ºé©³å›æœ€åä¸€ä¸ªèŠ‚ç‚¹ï¼Œå€¼>=æµç¨‹é›†åˆé•¿åº¦è¡¨ç¤ºä¸é©³å›,å›è½¦è·³è¿‡ï¼›");
 			while(true) {
 				String s=sc.nextLine().trim();
 				if(s.equals("")) {
@@ -95,7 +95,7 @@ public class Main {
 						abortFrom=j;
 						break;
 					}catch(Exception e) {
-						System.out.println("±ØĞëÎªÕûÊı£¡£¡");
+						System.out.println("å¿…é¡»ä¸ºæ•´æ•°ï¼ï¼");
 					}
 				}
 				
@@ -107,7 +107,7 @@ public class Main {
 	public static void startup() {
 		Scanner sc=new Scanner(System.in);
 		while(true) {
-			System.out.println("Á÷³ÌÃû³Æ£º");
+			System.out.println("æµç¨‹åç§°ï¼š");
 			String flowName=sc.nextLine().trim();
 			if(flowName.equals("")) {
 				continue;
@@ -118,7 +118,7 @@ public class Main {
 			}
 			String fromer=null;
 			while(true){
-				System.out.println("·¢ÆğÕß£º");
+				System.out.println("å‘èµ·è€…ï¼š");
 				fromer=sc.nextLine().trim();
 				if(fromer.equals("")) {
 					
@@ -135,9 +135,9 @@ public class Main {
 			TableFormat t=new TableFormat();
 			ArrayList<ArrayList<String>>process=new ArrayList<>();
 			ArrayList<String>s=new ArrayList<>();
-			s.add("ĞòºÅ");
-			s.add("Á÷³ÌÃû³Æ(Process)");
-			s.add("ÉóºËÕß(Auditer)");
+			s.add("åºå·");
+			s.add("æµç¨‹åç§°(Process)");
+			s.add("å®¡æ ¸è€…(Auditer)");
 			process.add(s);
 			for(int i=0;i<sh.size();i++) {
 				ArrayList<String>p=new ArrayList<>();
@@ -151,7 +151,7 @@ public class Main {
 		}
 	}
 	public static void test() {
-		FinalProcess<String, String>sh=Routine.finalFlow(Routine.calcFlow(Routine.getProcess("ÒµÎñ½Ó´ı"), "ÖÜÃ÷"),"ÖÜÃ÷");
+		FinalProcess<String, String>sh=Routine.finalFlow(Routine.calcFlow(Routine.getProcess("ä¸šåŠ¡æ¥å¾…"), "å‘¨æ˜"),"å‘¨æ˜");
 		for(int i=0;i<sh.size();i++) {
 			System.out.println(sh.getKey(i)+"-----------------"+sh.getValue(i));
 		}

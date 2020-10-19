@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="SonghongOA">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/mysql-connector-java-8.0.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/mssql-jdbc-7.4.1.jre8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/selenium-server-standalone-3.141.59.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
