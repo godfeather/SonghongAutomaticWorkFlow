@@ -51,7 +51,7 @@ public class AutoFlow {
 			Audit.songhong=new FirefoxDriver();
 		}
 		Audit.waiter= new WebDriverWait(Audit.songhong,5);
-		int abort=10000;	
+		int abort=0;	
 		FinalProcess<String, String>sh=workFlow;
 		if(sh==null) {
 			return;

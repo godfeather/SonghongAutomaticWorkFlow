@@ -91,7 +91,6 @@ public class Main {
 				}else {
 					try {
 						int j=Integer.parseInt(s);
-						
 						abortFrom=j;
 						break;
 					}catch(Exception e) {
@@ -102,7 +101,7 @@ public class Main {
 			}
 		}
 		
-		AutoFlow.autoFlow(flowName, fromer,CustomflowName,testAbort?abortFrom:10000);
+		AutoFlow.autoFlow(flowName, fromer,CustomflowName,(testAbort?abortFrom:10000));
 	}
 	public static void startup() {
 		Scanner sc=new Scanner(System.in);
