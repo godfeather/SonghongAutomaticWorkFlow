@@ -53,7 +53,7 @@ public class Main {
 		AutoFlow.manualFlow(workflowTitle,workflow,-1);
 	}
 	public static void automatic() {
-		int abortFrom=10000;
+		int abortFrom=0;
 		System.out.println("发起者：");
 		Scanner sc=new Scanner(System.in);
 		String fromer=read(sc);
@@ -80,7 +80,7 @@ public class Main {
 			System.out.println("已取消");
 			return;
 		}else if(advance.equalsIgnoreCase("y")){
-			
+			testAbort=true;
 			System.out.println("从哪个节点开始驳回？默认从0开始，-1表示驳回最后一个节点，值>=流程集合长度表示不驳回,回车跳过；");
 			while(true) {
 				String s=sc.nextLine().trim();
@@ -102,7 +102,7 @@ public class Main {
 			}
 		}
 		
-		AutoFlow.autoFlow(flowName, fromer,CustomflowName,abortFrom);
+		AutoFlow.autoFlow(flowName, fromer,CustomflowName,testAbort?abortFrom:10000);
 	}
 	public static void startup() {
 		Scanner sc=new Scanner(System.in);

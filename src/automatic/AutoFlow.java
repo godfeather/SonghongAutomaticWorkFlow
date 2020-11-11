@@ -44,13 +44,14 @@ public class AutoFlow {
 		Properties.loadProperties();
 		String driverType=Properties.getValue("driver");
 		if(driverType==null) {
+			System.out.println("错误：未指定驱动类型！");
 		}else if(driverType.equals("chrome")){
 			Audit.songhong=new ChromeDriver();
 		}else {
 			Audit.songhong=new FirefoxDriver();
 		}
 		Audit.waiter= new WebDriverWait(Audit.songhong,5);
-		int abort=1000;	
+		int abort=10000;	
 		FinalProcess<String, String>sh=workFlow;
 		if(sh==null) {
 			return;
