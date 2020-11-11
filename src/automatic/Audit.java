@@ -56,7 +56,7 @@ public class Audit {
 	/**
 	 * 通过提供的流程标题进入流程审核页
 	 * @param title 流程标题
-	 * @return 审核状态
+	 * @return 审核状态 0 表示成功 -1 表示失败未找到
 	 */
 	public static int clickFlowCe(String title) {			//根据流程名选中
 		try {
@@ -83,30 +83,30 @@ public class Audit {
 		List<WebElement> li=worksta.findElements(By.className("jfgrid-data-cell"));
 		int width=9;
 		for(int i=2;i<li.size();i++) {
-			
+
 			if(width==9) {
 				String ftitle=null;
-						while(true) {
-							try {
-								ftitle=li.get(i).getText();
-								break;
-							}catch(StaleElementReferenceException e) {
-								if(debug) {
-									e.printStackTrace();
-									System.out.println("元素过期");
-								}
-								worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
-								li=worksta.findElements(By.className("jfgrid-data-cell"));
-								
-							}
+				while(true) {
+					try {
+						ftitle=li.get(i).getText();
+						break;
+					}catch(StaleElementReferenceException e) {
+						if(debug) {
+							e.printStackTrace();
+							System.out.println("元素过期");
 						}
-						
+						worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
+						li=worksta.findElements(By.className("jfgrid-data-cell"));
+
+					}
+				}
+
 				if(ftitle.equals(title)) {
 					while(true) {
 						try {
 							li.get(i).click();
-						songhong.findElement(By.id("lr_verify")).click();
-						
+							songhong.findElement(By.id("lr_verify")).click();
+
 						}catch(Exception e) {
 							if(debug) {
 								e.printStackTrace();
@@ -138,7 +138,7 @@ public class Audit {
 		}
 		return -1;
 	}
-	
+
 	public static void shut() {
 		if(songhong!=null) {
 			songhong.close();
@@ -146,91 +146,91 @@ public class Audit {
 	}
 	public static boolean resubmit(String title) {
 		try {
-		List<WebElement> web=songhong.findElements(By.tagName("iframe"));
-		WebElement iframe=web.get(web.size()-1);
-		songhong.switchTo().frame(iframe);
-		while(true) {
-			try {
-				trying(By.id("verify_submit"),true);
-				songhong.findElement(By.id("verify_submit")).click();
-				songhong.switchTo().defaultContent();
-				trying( By.id("layui-layer-iframe1"));	  
-				break;
-			}catch(Exception e) {
-				if(debug) {
-					e.printStackTrace();
-				}
-				while(true){
-					try{
-						songhong.switchTo().frame(iframe);
-						break;
-					}catch(Exception g){
-						if(debug) {
-							g.printStackTrace();
-						}
-						songhong.switchTo().defaultContent();
-						web=songhong.findElements(By.tagName("iframe"));
-						iframe=web.get(web.size()-1);
-					}
-				}
-
-
-			}
-		}
-		songhong.switchTo().defaultContent();
-		while(true) {
-			try {
-				songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
-				break;
-			}catch(Exception e) {
-				if(debug) {
-					e.printStackTrace();
-				}
-				songhong.switchTo().frame(iframe);
-				songhong.findElement(By.id("verify_submit")).click();
-				songhong.switchTo().defaultContent();
-			}
-		}
-		Thread.sleep(wait);
-		while(true) {								//检测重新提交窗口是否关闭
-			try {
-				trying(By.className("layui-layer-iframe1"));			//抛出异常说明未找到元素直接跳出如果找到提交对话框说明提交未成功则重新提交
+			List<WebElement> web=songhong.findElements(By.tagName("iframe"));
+			WebElement iframe=web.get(web.size()-1);
+			songhong.switchTo().frame(iframe);
+			while(true) {
 				try {
-					songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
-					System.out.println("发起人已重新提交……");
+					trying(By.id("verify_submit"),true);
+					songhong.findElement(By.id("verify_submit")).click();
+					songhong.switchTo().defaultContent();
+					trying( By.id("layui-layer-iframe1"));
+					break;
 				}catch(Exception e) {
 					if(debug) {
 						e.printStackTrace();
 					}
-				}
-			}catch(Exception e) {
-				if(debug) {
-					e.printStackTrace();
-				}
-				break;
-			}
-		}
-		for(int i=0;i<tryingCount;i++) {																								//等待审核完毕返回任务页
-			String id=null;
-			try {
-				id=songhong.findElement(By.className("active")).getAttribute("id");
-			}catch(StaleElementReferenceException e) {
-				if(debug) {
-					e.printStackTrace();
-					System.out.println("查找到的iframe过期");
-				}
-				return true;
-			}
-			if(id.equals("lr_tab_021a59b0-2589-4f9e-8140-6052177a967c")) {
-				return true;
-			}else {
-				Thread.sleep(1000);
-				System.out.println("正在重新提交……");
-				if(i==tryingCount-1) {
-					System.out.println(tryingCount+"次等待失败，该流程未知是否已审核通过");
+					while(true){
+						try{
+							songhong.switchTo().frame(iframe);
+							break;
+						}catch(Exception g){
+							if(debug) {
+								g.printStackTrace();
+							}
+							songhong.switchTo().defaultContent();
+							web=songhong.findElements(By.tagName("iframe"));
+							iframe=web.get(web.size()-1);
+						}
+					}
+
+
 				}
 			}
-		}
+			songhong.switchTo().defaultContent();
+			while(true) {
+				try {
+					songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
+					break;
+				}catch(Exception e) {
+					if(debug) {
+						e.printStackTrace();
+					}
+					songhong.switchTo().frame(iframe);
+					songhong.findElement(By.id("verify_submit")).click();
+					songhong.switchTo().defaultContent();
+				}
+			}
+			Thread.sleep(wait);
+			while(true) {								//检测重新提交窗口是否关闭
+				try {
+					trying(By.className("layui-layer-iframe1"));			//抛出异常说明未找到元素直接跳出如果找到提交对话框说明提交未成功则重新提交
+					try {
+						songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
+						System.out.println("发起人已重新提交……");
+					}catch(Exception e) {
+						if(debug) {
+							e.printStackTrace();
+						}
+					}
+				}catch(Exception e) {
+					if(debug) {
+						e.printStackTrace();
+					}
+					break;
+				}
+			}
+			for(int i=0;i<tryingCount;i++) {																								//等待审核完毕返回任务页
+				String id=null;
+				try {
+					id=songhong.findElement(By.className("active")).getAttribute("id");
+				}catch(StaleElementReferenceException e) {
+					if(debug) {
+						e.printStackTrace();
+						System.out.println("查找到的iframe过期");
+					}
+					return true;
+				}
+				if(id.equals("lr_tab_021a59b0-2589-4f9e-8140-6052177a967c")) {
+					return true;
+				}else {
+					Thread.sleep(1000);
+					System.out.println("正在重新提交……");
+					if(i==tryingCount-1) {
+						System.out.println(tryingCount+"次等待失败，该流程未知是否已审核通过");
+					}
+				}
+			}
 		}catch(Exception e) {
 			if(debug) {
 				e.printStackTrace();
@@ -241,118 +241,118 @@ public class Audit {
 	}
 	public static boolean accept(boolean accept,String title) {
 		try {
-		List<WebElement> web=songhong.findElements(By.tagName("iframe"));
-		WebElement iframe=web.get(web.size()-1);
-		songhong.switchTo().frame(iframe);
-		while(true) {
-			try {
-				trying(By.id("verify"),true);
-				songhong.findElement(By.id("verify")).click();
-				songhong.switchTo().defaultContent();
-				trying( By.id("layui-layer-iframe1"));	  
-				break;
+			List<WebElement> web=songhong.findElements(By.tagName("iframe"));
+			WebElement iframe=web.get(web.size()-1);
+			songhong.switchTo().frame(iframe);
+			while(true) {
+				try {
+					trying(By.id("verify"),true);
+					songhong.findElement(By.id("verify")).click();
+					songhong.switchTo().defaultContent();
+					trying( By.id("layui-layer-iframe1"));
+					break;
 				}catch(Exception e) {
 					if(debug) {
 						e.printStackTrace();
 					}
 					songhong.switchTo().frame(iframe);
 				}
-		}
-		trying(By.id("layui-layer-iframe1"));
-		songhong.switchTo().frame("layui-layer-iframe1");
-		JavascriptExecutor js=(JavascriptExecutor)songhong;
-		
-		while(true){
-			try{
-			js.executeScript("$(\"#lr_form_bg\").hide()");
-			break;
-			}catch(Exception e){
-				if(debug) {
-					e.printStackTrace();
-					System.out.println("js执行失败，隐藏元素失败");
-				}
 			}
-		}
-		Thread.sleep(wait);
-		WebElement we=null;
-		while(true){
-			try{
-			if(accept) {
-			we=songhong.findElement(By.id("verifyType1"));		//选中同意
-				while(!we.isSelected()) {							//如果未选中就多次
-					try{
-					we.click();
-					}catch(Exception e){
-						if(debug) {
-							e.printStackTrace();
-						}
+			trying(By.id("layui-layer-iframe1"));
+			songhong.switchTo().frame("layui-layer-iframe1");
+			JavascriptExecutor js=(JavascriptExecutor)songhong;
+
+			while(true){
+				try{
+					js.executeScript("$(\"#lr_form_bg\").hide()");
+					break;
+				}catch(Exception e){
+					if(debug) {
+						e.printStackTrace();
+						System.out.println("js执行失败，隐藏元素失败");
 					}
-					System.out.println("审核值：------------------------【同意】");
 				}
-				break;
-			}else {
-				we=songhong.findElement(By.id("verifyType2"));
-				while(!we.isSelected()) {
-					try{
-					we.click();
-					}catch(Exception g){
-						if(debug) {
-							g.printStackTrace();
+			}
+			Thread.sleep(wait);
+			WebElement we=null;
+			while(true){
+				try{
+					if(accept) {
+						we=songhong.findElement(By.id("verifyType1"));		//选中同意
+						while(!we.isSelected()) {							//如果未选中就多次
+							try{
+								we.click();
+							}catch(Exception e){
+								if(debug) {
+									e.printStackTrace();
+								}
+							}
+							System.out.println("审核值：------------------------【同意】");
 						}
+						break;
+					}else {
+						we=songhong.findElement(By.id("verifyType2"));
+						while(!we.isSelected()) {
+							try{
+								we.click();
+							}catch(Exception g){
+								if(debug) {
+									g.printStackTrace();
+								}
+							}
+							System.out.println("审核值：------------------------【不同意】");
+						}
+						break;
 					}
-					System.out.println("审核值：------------------------【不同意】");
+				}catch(Exception e){
+					if(debug) {
+						e.printStackTrace();
+					}
+					continue;
 				}
-				break;
 			}
-		}catch(Exception e){
-			if(debug) {
-				e.printStackTrace();
-			}
-			continue;	
-		}
-		}
-		songhong.switchTo().defaultContent(); 
-		songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
-		while(true) {								//检测重新提交窗口是否关闭
-			try {
-				songhong.findElement(By.className("layui-layer-iframe1"));			//抛出异常说明未找到元素直接跳出如果找到提交对话框说明提交未成功则重新提交
+			songhong.switchTo().defaultContent();
+			songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
+			while(true) {								//检测重新提交窗口是否关闭
 				try {
-					songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
+					songhong.findElement(By.className("layui-layer-iframe1"));			//抛出异常说明未找到元素直接跳出如果找到提交对话框说明提交未成功则重新提交
+					try {
+						songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
 				}catch(Exception e) {
-					e.printStackTrace();
-				}
-			}catch(Exception e) {
-				if(debug) {
-					e.printStackTrace();
-				}
-				break;
-			}
-		}
-		for(int i=0;i<tryingCount;i++) {	//等待审核完毕返回任务页
-			String id=null;
-			try {
-				id=songhong.findElement(By.className("active")).getAttribute("id");
-			}catch(Exception e) {
-				if(debug) {
-					e.printStackTrace();
-					System.out.println("验证是否审核通过时，active抛出异常，详情查看异常内容");
-				}
-				continue;
-			}
-			if(id.equals("lr_tab_021a59b0-2589-4f9e-8140-6052177a967c")) {
-				if(debug) {
-					System.out.println("审核成功，因为当前激活frame与任务列表id相同");
-				}
-				System.out.println("流程审核成功");
-				return true;
-			}else {
-				Thread.sleep(1000);
-				System.out.println("正在提交流程……");
-				if(i==tryingCount-1) {
-					System.out.println(tryingCount+"次等待失败，该流程未知是否已审核通过");
+					if(debug) {
+						e.printStackTrace();
+					}
+					break;
 				}
 			}
-		}
+			for(int i=0;i<tryingCount;i++) {	//等待审核完毕返回任务页
+				String id=null;
+				try {
+					id=songhong.findElement(By.className("active")).getAttribute("id");
+				}catch(Exception e) {
+					if(debug) {
+						e.printStackTrace();
+						System.out.println("验证是否审核通过时，active抛出异常，详情查看异常内容");
+					}
+					continue;
+				}
+				if(id.equals("lr_tab_021a59b0-2589-4f9e-8140-6052177a967c")) {
+					if(debug) {
+						System.out.println("审核成功，因为当前激活frame与任务列表id相同");
+					}
+					System.out.println("流程审核成功");
+					return true;
+				}else {
+					Thread.sleep(1000);
+					System.out.println("正在提交流程……");
+					if(i==tryingCount-1) {
+						System.out.println(tryingCount+"次等待失败，该流程未知是否已审核通过");
+					}
+				}
+			}
 		}catch(Exception e) {
 			if(debug) {
 				e.printStackTrace();
@@ -367,20 +367,20 @@ public class Audit {
 		}
 		return false;
 	}
-	
+
 	static boolean trying(By by,boolean needtoclick,int scecond) {
 		if(waiter==null) {
 			waiter=new WebDriverWait(songhong,scecond);
 		}
-		
+
 		if(needtoclick) {
-				waiter.until(ExpectedConditions.elementToBeClickable(by));
-			
+			waiter.until(ExpectedConditions.elementToBeClickable(by));
+
 		}else {
-			
-			
-				waiter.until(ExpectedConditions.presenceOfElementLocated(by));
-				
+
+
+			waiter.until(ExpectedConditions.presenceOfElementLocated(by));
+
 		}
 		return true;
 	}
@@ -403,7 +403,7 @@ public class Audit {
 		trying( By.id("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c"));
 		songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
 		while (true) {
-		    try {
+			try {
 				songhong.findElement(By.id("lr_left_tree_3")).click();
 				break;
 			} catch (Exception e) {
@@ -432,21 +432,21 @@ public class Audit {
 		for(int i=2;i<li.size();i++) {
 			if(width==9) {
 				String ftitle=null;
-						while(true) {
-							try {
-								ftitle=li.get(i).getText();
-								if(ftitle.equals(flowName)){
-								return li.get(i + 2).findElements(By.tagName("span")).get(0).getText();
-								}
-								break;
-							}catch(StaleElementReferenceException e) {
-								if(debug) {
-									System.out.println("元素已过期，将会重试！");
-								}
-								worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
-								li=worksta.findElements(By.className("jfgrid-data-cell"));
-							}
+				while(true) {
+					try {
+						ftitle=li.get(i).getText();
+						if(ftitle.equals(flowName)){
+							return li.get(i + 2).findElements(By.tagName("span")).get(0).getText();
 						}
+						break;
+					}catch(StaleElementReferenceException e) {
+						if(debug) {
+							System.out.println("元素已过期，将会重试！");
+						}
+						worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
+						li=worksta.findElements(By.className("jfgrid-data-cell"));
+					}
+				}
 
 				width=0;
 			}
