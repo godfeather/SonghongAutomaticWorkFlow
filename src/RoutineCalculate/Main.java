@@ -53,7 +53,7 @@ public class Main {
         AutoFlow.manualFlow(workflowTitle,workflow,-1);
     }
     public static void automatic() {
-        int abortFrom = -1;
+        int abortFrom = 0;
         System.out.println("发起者：");
         Scanner sc=new Scanner(System.in);
         String fromer=read(sc);

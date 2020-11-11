@@ -1,6 +1,6 @@
 .idea/
 .settings/
-./bin/*
-./out/*
+bin/*
+out/*
 *.log
 jar-temp/*

@@ -43,10 +43,10 @@ public class AutoFlow {
 	 * @param workFlow
 	 */
 	public static  void plantFlowCore(String flowTitle,int injectInterval,FinalProcess<String,String> workFlow){
-		injectInterval += 1;
-		int rejectPointCount = injectInterval; // 拒绝点计数，每次拒绝后加1个拒绝间隔
+		int injectInterval2 = (injectInterval + 1);
+		int rejectPointCount = injectInterval2; // 拒绝点计数，每次拒绝后加1个拒绝间隔
 		System.out.println("流程标题：" + flowTitle);
-		System.out.println("驳回间隔：" + injectInterval);
+		System.out.println("驳回间隔：" + injectInterval2);
 		try {
 			Audit.songhong.close();
 		}catch(Exception e){
@@ -98,9 +98,9 @@ public class AutoFlow {
 			if(foundFlow == 0) {
 				// 流程第一个节点在下标为1处，所以+ 1
 				if(rejectPointCount == i) {
-					rejectPointCount += injectInterval;
+					rejectPointCount += injectInterval2;
 					Audit.accept(false,flowTitle);
-					i=-1;
+					i = 0;
 					boolean initLoginSuc = Audit.login(initator,Properties.getParameter("globalPwd"));
 					if (initLoginSuc) {
 						int initFoundFlow = Audit.clickFlowCe(flowTitle);
@@ -121,7 +121,7 @@ public class AutoFlow {
 					}
 					boolean b = Audit.resubmit(flowTitle);
 					if(!b) {
-						System.out.println("试图重新提交流程【" + flowTitle + "时失败，请手动完成后输入\"done\"继续。");
+						System.out.println("试图重新提交流程【" + flowTitle + "】时失败，请手动完成后输入\"done\"继续。");
 						boolean continu=manual();
 						if(!continu) {
 							System.out.println("流程已中断！");

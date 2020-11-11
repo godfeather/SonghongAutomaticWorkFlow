@@ -154,7 +154,7 @@ public class Audit {
 					trying(By.id("verify_submit"),true);
 					songhong.findElement(By.id("verify_submit")).click();
 					songhong.switchTo().defaultContent();
-					trying( By.id("layui-layer-iframe1"));
+					trying( By.className("layui-layer-iframe"),1);
 					break;
 				}catch(Exception e) {
 					if(debug) {
@@ -180,36 +180,26 @@ public class Audit {
 			songhong.switchTo().defaultContent();
 			while(true) {
 				try {
-					songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
-					break;
-				}catch(Exception e) {
-					if(debug) {
-						e.printStackTrace();
-					}
-					songhong.switchTo().frame(iframe);
-					songhong.findElement(By.id("verify_submit")).click();
-					songhong.switchTo().defaultContent();
-				}
-			}
-			Thread.sleep(wait);
-			while(true) {								//检测重新提交窗口是否关闭
-				try {
-					trying(By.className("layui-layer-iframe1"));			//抛出异常说明未找到元素直接跳出如果找到提交对话框说明提交未成功则重新提交
+					songhong.findElement(By.className("layui-layer-btn0")).click();
 					try {
-						songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
-						System.out.println("发起人已重新提交……");
+						trying(By.className("layui-layer-iframe"),1);			//抛出异常说明未找到元素直接跳出如果找到提交对话框说明提交未成功则重新提交
+						System.out.println("提交失败，正在重试……");
 					}catch(Exception e) {
 						if(debug) {
 							e.printStackTrace();
 						}
+						System.out.println("提交完成");
+						break;
 					}
 				}catch(Exception e) {
+					System.out.println("点击“确认”按钮失败，正在重试……");
 					if(debug) {
 						e.printStackTrace();
 					}
-					break;
 				}
 			}
+			Thread.sleep(wait);
+
 			for(int i=0;i<tryingCount;i++) {																								//等待审核完毕返回任务页
 				String id=null;
 				try {
