@@ -81,7 +81,7 @@ public class Main {
             return;
         }else if(advance.equalsIgnoreCase("y")){
             testAbort=true;
-            System.out.println("驳回间隔，默认0表示无间隔，-1表示驳回,回车使用默认值");
+            System.out.println("驳回间隔，默认0表示无间隔驳回，-1表示不驳回,回车使用默认值");
             while(true) {
                 String s=sc.nextLine().trim();
                 if(s.equals("")) {

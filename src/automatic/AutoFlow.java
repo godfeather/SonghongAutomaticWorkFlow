@@ -46,7 +46,7 @@ public class AutoFlow {
 		int injectInterval2 = (injectInterval + 1);
 		int rejectPointCount = injectInterval2; // 拒绝点计数，每次拒绝后加1个拒绝间隔
 		System.out.println("流程标题：" + flowTitle);
-		System.out.println("驳回间隔：" + injectInterval2);
+		System.out.println("驳回步长：" + injectInterval2);
 		try {
 			Audit.songhong.close();
 		}catch(Exception e){
@@ -106,8 +106,14 @@ public class AutoFlow {
 						int initFoundFlow = Audit.clickFlowCe(flowTitle);
 						if (initFoundFlow == 0) {
 						} else  {
-							System.out.println("驳回后发起者列表中未找到流程：【" + flowTitle + "】");
-							return;
+							System.out.println("驳回后发起者列表中未找到流程：【" + flowTitle + "】，请手动完成操作后输入“done”继续");
+							boolean continu=manual();
+							if(!continu) {
+								System.out.println("流程已中断！");
+								return;
+							}
+							resetWebDriver(driverType);
+							continue;
 						}
 					} else {
 						System.out.println("用户登录失败，请手动登录，完成后再输入“done”继续");
@@ -144,7 +150,7 @@ public class AutoFlow {
 					}
 				}
 			}else{
-				System.out.println("流程审核故障，请手动审核，完成后在输入“done”继续");
+				System.out.println("流程审核故障，请根据程序给出的当前计划审核值（同意或不同意）手动完成审核操作，完成后在输入“done”继续");
 				boolean continu=manual();
 				if(!continu) {
 					System.out.println("流程已中断！");
