@@ -8,4 +8,4 @@ jar -xvf ../selenium-server-standalone-3.141.59.jar com javax net okhttp3 okio o
 javac -cp ../src:../mssql-jdbc-7.4.1.jre8.jar:../mysql-connector-java-8.0.21.jar:../selenium-server-standalone-3.141.59.jar ../src/RoutineCalculate/Main.java -d ./ -encoding utf8
 jar -cvmf ../META-INF/MANIFEST.MF ../out/release.jar ./
 cd ..
-rm -rf ./jar-temp/*
+rm -rf ./jar-temp

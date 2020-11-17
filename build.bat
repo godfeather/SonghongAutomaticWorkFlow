@@ -1,3 +1,4 @@
+REM Windows 自动编译打包脚本
 @echo off
 echo 正在生成项目可执行jar包……
 del /Q out
