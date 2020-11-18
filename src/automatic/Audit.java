@@ -390,7 +390,6 @@ public class Audit {
 	 * 调用时机：在某个节点审核通过后，该方法会在“已办任务”中查找对应的流程的状态并返回
 	 */
 	public static String getFlowStatusAfterAudit(String flowName){
-		trying( By.id("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c"));
 		songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
 		while (true) {
 			try {
@@ -405,10 +404,13 @@ public class Audit {
 				}
 			}
 		}
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		System.out.println("点击成功，正在等待页面加载结束");
+		while (true) {
+			String displayValue = songhong.findElement(By.id("jfgrid_loading_girdtable")).getCssValue("display");
+			if ("none".equals(displayValue)) {
+				System.out.println("页面加载结束");
+				break;
+			}
 		}
 		try {
 			trying( By.className("jfgrid-data-cell"));
