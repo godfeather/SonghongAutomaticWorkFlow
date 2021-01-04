@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -54,14 +56,7 @@ public class AutoFlow {
 		Properties.reload();
 		Properties.loadProperties();
 		String driverType = Properties.getValue("driver");
-		if (driverType == null) {
-			System.out.println("错误：未指定驱动类型！");
-		} else if(driverType.equals("chrome")) {
-			Audit.songhong = new ChromeDriver();
-		} else {
-			Audit.songhong=new FirefoxDriver();
-		}
-		Audit.waiter = new WebDriverWait(Audit.songhong,5);
+		resetWebDriver(driverType);
 		FinalProcess<String, String>sh = workFlow;
 		if(sh==null) {
 			System.out.println("错误：输入流程为空！");
@@ -219,6 +214,8 @@ public class AutoFlow {
 		}else {
 			Audit.songhong=new FirefoxDriver();
 		}
+		Audit.songhong.manage().window().setPosition(new Point(0,0));
+		Audit.songhong.manage().window().setSize(new Dimension(600,500));
 		Audit.waiter = new WebDriverWait(Audit.songhong,5);
 	}
 }

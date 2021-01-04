@@ -11,8 +11,8 @@ create table mrright_songhongoa.dbo.staff(
 */
 drop table flow,staff;
 insert into mrright_songhongoa.dbo.staff values
-('lilin','李霖','5','总经理','no'),--
-('lilin','李霖','5','党支部书记','no'),--
+('zuofutao','左伏桃','5','总经理','no'),--
+('zuofutao','左伏桃','5','党支部书记','no'),--
 ('guorunqing','郭润清','4','分管副总','测试认证部'),--
 ('guochenxiao','郭晨啸','1','普通员工','战略规划部'),--
 ('guorunqing','郭润清','4','分管副总','运营管理部'),--
@@ -70,8 +70,8 @@ insert into mrright_songhongoa.dbo.staff values
 ('xianglili','项丽莉','1','行政助理','综合办公室'),--
 ('zhangxun','张勋','1','合同保管员','综合办公室'),--
 ('linyu','林瑜','4','分管副总','技术研发部'),--
-('lilin','李霖','4','分管副总','综合办公室'),--
-('lilin','李霖','4','分管副总','战略规划部'),
+('zhaoyan','赵艳','4','分管副总','综合办公室'),--
+('zuofutao','左伏桃','4','分管副总','战略规划部'),
 ('weijunsheng','魏俊生','3','执行总监','技术研发部'),
 ('dourui','窦瑞','3','执行总监','技术研发部'),
 ('zhaoyan','赵艳','3','执行总监','综合办公室'),

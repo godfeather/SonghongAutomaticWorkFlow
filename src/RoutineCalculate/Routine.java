@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
 import Collection.FinalProcess;
+import arguments.Args;
+
 public class Routine {
 	/**
 	 * 数据库名称，如mysql，sqlserver
@@ -269,20 +271,10 @@ public class Routine {
 		}
 		return str;
 	}
-	public static Statement connect() {
-		Scanner in =new Scanner(System.in);
-		String ipAndPort=null;
-		String userr=null;
-		String pwdd=null;
-			System.out.println("输入IP:Port连接数据库");
-			String msg=in.nextLine().trim();
-				ipAndPort=msg.equals("")?defaultHost:msg;
-			System.out.println("用户名：");
-			String msg1=in.nextLine().trim();
-				userr=msg1.equals("")?user:msg1;
-			System.out.println("密码：");
-				String msg2=in.nextLine().trim();
-				pwdd=msg2.equals("")?pwd:msg2;
+	public static Statement connect(Args args) {
+		String ipAndPort=args.getValue("connectionString") == null ? defaultHost : args.getValue("connectionString");
+		String userr = args.getValue("user") == null ? user : args.getValue("user");
+		String pwdd= args.getValue("password") == null ? pwd : args.getValue("password");
 				if("mysql".equals(databaseBrand)) {
 					form=Database.mysqlConnect(ipAndPort,userr, pwdd);
 				}else{

@@ -1,6 +1,8 @@
 package RoutineCalculate;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
+
+import arguments.Args;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import Collection.FinalProcess;
 import Collection.Properties;
@@ -8,129 +10,145 @@ import Collection.TableFormat;
 import automatic.AutoFlow;
 public class Main {
     public static void main(String[] args) {
+        Args arg = new Args(args);
         System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "selenium_firefox.log");
         Properties.reload();
         Properties.loadProperties();
-        Routine.connect();//链接数据库
-        if(Routine.form==null) {
-            return;
-        }
-        Scanner sc=new Scanner(System.in);
-        while(true) {
-            System.out.println("输入编号使用功能：");
-            System.out.println("[1]---流程计算");
-            System.out.println("[2]---流程自动");
-            System.out.println("[3]---手动流程");
-            String b=read(sc);
-            if(b==null) {
-                break;
-            }else if(b.equals("1")) {
-                startup();
-            }else if(b.equals("2")) {
-                automatic();
-            }else if(b.equals("3")) {
-                manual();
-
-            }
-        }
-
-    }
-    public static void manual() {
-        System.out.println("按顺序输入手动计算出的流程节点中审核者的中文名称使用逗号\",\"隔开；\n通过流程标题确定需要在页面中查找审核的流程\n\n");
-        System.out.println("请输入流程标题用于确定页面上流程名称：");
-        Scanner sc=new Scanner(System.in);
-        String workflowTitle=read(sc);
-        if(workflowTitle==null) {
-            System.out.println("已取消");
-            return;
-        }
-        System.out.println("请输入流程序列使用逗号隔开：");
-        String workflow=read(sc);
-        if(workflow==null) {
-            System.out.println("已取消");
-            return;
-        }
-        AutoFlow.manualFlow(workflowTitle,workflow,-1);
-    }
-    public static void automatic() {
-        int abortFrom = 0;
-        System.out.println("发起者：");
-        Scanner sc=new Scanner(System.in);
-        String fromer=read(sc);
-        if(fromer==null) {
-            System.out.println("已取消");
-            return;
-        }
-        System.out.println("流程名称：");
-        String flowName=read(sc);
-        if(flowName==null) {
-            System.out.println("已取消");
-            return;
-        }
-        System.out.println("流程标题：");
-        String CustomflowName=read(sc);
-        if(CustomflowName==null) {
-            System.out.println("已取消");
-            return;
-        }
-        System.out.println("是否扩展功能?    y--是");
-        String advance=read(sc);
-        boolean testAbort=false;
-        if(advance==null) {
-            System.out.println("已取消");
-            return;
-        }else if(advance.equalsIgnoreCase("y")){
-            testAbort=true;
-            System.out.println("驳回间隔，默认0表示无间隔驳回，-1表示不驳回,回车使用默认值");
-            while(true) {
-                String s=sc.nextLine().trim();
-                if(s.equals("")) {
-                    break;
-                } if(s.equals("quit")){
-                    return;
-                }else {
-                    try {
-                        int j = Integer.parseInt(s);
-                        abortFrom = j;
-                        break;
-                    }catch(Exception e) {
-                        System.out.println("必须为整数！！");
-                    }
+        String file = arg.getValue("parameter");
+        String params = "";
+        BufferedReader br = null;
+        if (file != null) {
+            try {
+                br = new BufferedReader(new FileReader(new File(file)));
+                String str = br.readLine();
+                while (str != null) {
+                    params += str +"\n";
+                    str = br.readLine();
                 }
-
+                br.close();
+            } catch (IOException e) {
+                System.out.println("参数文件读取错误！");
+                return;
+            }finally {
+                try {
+                    br.close();
+                } catch (Exception e) {
+                }
+            }
+            String [] paramss = params.split("\n");
+            String lineIndex = arg.getValue("lineIndex");
+            int lineI = 0;
+            if (lineIndex == null) {
+                lineI = 0;
+            } else {
+                try {
+                    lineI = Integer.parseInt(lineIndex);
+                } catch (Exception e) {
+                    System.out.println("参数文件的行指针只能为整数！");
+                    return;
+                }
+            }
+            if (!(lineI < paramss.length && lineI > -1)) { // 参数文件指针越界时
+                System.out.println("所指示行无参数可用！");
+                return;
+            } else {
+                arg = new Args(paramss[lineI].split(" "));
             }
         }
 
-        AutoFlow.autoFlow(flowName, fromer,CustomflowName,(testAbort?abortFrom:-1));
+        String help = arg.getValue("help");
+        if (help != null) {
+            arg.printHelp();
+            return;
+        }
+        String mode = arg.getValue("mode");
+        if (mode == null) {
+            System.out.println("需要-m选项指定模式!");
+            return;
+        }
+        Routine.connect(arg);//链接数据库
+        if(Routine.form==null) {
+            System.out.println("数据库未连接！");
+            return;
+        }
+        if (mode.equals("auto")) {
+            automatic(arg);
+        } else if (mode.equals("calc")) {
+            startup(arg);
+        } else if (mode.equals("manual")) {
+            manual(arg);
+        } else {
+            System.out.println("未知的模式：" + mode);
+            return;
+        }
     }
-    public static void startup() {
-        Scanner sc=new Scanner(System.in);
-        while(true) {
-            System.out.println("流程名称：");
-            String flowName=sc.nextLine().trim();
-            if(flowName.equals("")) {
-                continue;
-            }else if(flowName.equalsIgnoreCase("quit")) {
+    public static void manual(Args arg) {
+        String workflowTitle= arg.getValue("title");
+        if(workflowTitle==null) {
+            System.out.println("需要-t选项指定流程标题！");
+            return;
+        }
+        String workflow= arg.getValue("sequence");
+        if(workflow==null) {
+            System.out.println("需要使用-s选项指定流程审核者队列！");
+            return;
+        }
+        String rejectStep = arg.getValue("reject");
+        int step = -1;
+        if (rejectStep == null) {
+            step = -1;
+        } else {
+            try {
+                step = Integer.parseInt(rejectStep.trim());
+            }catch (Exception e) {
+                System.out.println("驳回步长必须为整数");
                 return;
-            }else {
-
             }
-            String fromer=null;
-            while(true){
-                System.out.println("发起者：");
-                fromer=sc.nextLine().trim();
-                if(fromer.equals("")) {
-
-                }else if(fromer.equalsIgnoreCase("quit")) {
+        }
+        AutoFlow.manualFlow(workflowTitle,workflow,step);
+    }
+    public static void automatic(Args args) {
+        int abortFrom = -1;
+        String fromer= args.getValue("reason");
+        if(fromer==null) {
+            System.out.println("需要使用-r选项指定发起者!");
+            return;
+        }
+        String flowName=args.getValue("name");
+        if(flowName==null) {
+            System.out.println("需要使用-n选项指定流程名称！");
+            return;
+        }
+        String CustomflowName=args.getValue("title");
+        if(CustomflowName==null) {
+            System.out.println("需要使用-t选项指定流程标题!");
+            return;
+        }
+        String abort = args.getValue("reject");
+        if (abort == null) {
+        } else {
+            try {
+                abortFrom = Integer.parseInt(abort.trim());
+            }catch (Exception e) {
+                System.out.println("驳回步长必须为整数");
+                return;
+            }
+        }
+        AutoFlow.autoFlow(flowName, fromer,CustomflowName,abortFrom);
+    }
+    public static void startup(Args args) {
+            String flowName=args.getValue("name");
+            String fromer=args.getValue("reason");
+            if (flowName == null) {
+                System.out.println("需要使用-n选项指定流程名称！");
+                return;
+            } else {
+                if (fromer == null) {
+                    System.out.println("需要使用-r选项指定发起者！");
                     return;
-                }else {
-                    break;
                 }
             }
             FinalProcess<String, String>sh=Routine.finalFlow(Routine.calcFlow(Routine.getProcess(flowName), fromer),fromer);
-            if(sh==null) {
-                continue;
-            }
             TableFormat t=new TableFormat();
             ArrayList<ArrayList<String>>process=new ArrayList<>();
             ArrayList<String>s=new ArrayList<>();
@@ -147,25 +165,11 @@ public class Main {
             }
             t.getTableFormat(process);
             t.showTable();
-        }
     }
     public static void test() {
         FinalProcess<String, String>sh=Routine.finalFlow(Routine.calcFlow(Routine.getProcess("业务接待"), "周明"),"周明");
         for(int i=0;i<sh.size();i++) {
             System.out.println(sh.getKey(i)+"-----------------"+sh.getValue(i));
         }
-    }
-    public static String read(Scanner in) {
-        while(true) {
-            String msg=in.nextLine().trim();
-            if(msg.equals("")) {
-
-            }else if(msg.equals("quit")){
-                break;
-            }else {
-                return msg;
-            }
-        }
-        return null;
     }
 }
