@@ -34,7 +34,7 @@ credential=sa/123456
 # 数据库登录凭据，用户名在前，密码在后，使用“/”隔开
 databaseBrand=sqlserver
 # 数据库品牌，可选项为mysql和sqlserver，默认为sqlserver,mysql仅支持8.0以上版本
-loginTryingCount=5
+loginTryingCount=60
 # 登录确认次数，当登录似乎未成功时，系统将开始尝试确认是否登录成功（是否已进入主页）；尝试设定次数后（1秒确认一次），会停止系统等待用户确认；
 # 若登入首页过程中由于网络状况不好而导致超出确认次数，可增加尝试次数
 debug=false

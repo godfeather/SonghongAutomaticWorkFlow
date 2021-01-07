@@ -3,6 +3,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import arguments.Args;
+import automatic.Audit;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import Collection.FinalProcess;
 import Collection.Properties;
@@ -27,7 +28,7 @@ public class Main {
                 }
                 br.close();
             } catch (IOException e) {
-                System.out.println("参数文件读取错误！");
+                System.out.println("参数文件[" +file+ "]读取错误！");
                 return;
             }finally {
                 try {
@@ -80,6 +81,10 @@ public class Main {
         } else {
             System.out.println("未知的模式：" + mode);
             return;
+        }
+        try {
+            Audit.songhong.close();
+        }catch (Exception e) {
         }
     }
     public static void manual(Args arg) {
