@@ -144,7 +144,7 @@ public class AutoFlow {
 					}
 				}
 			}else{
-				System.out.println("流程审核故障，请手动审核为【" + (rejectPointCount == i ? "不同意" : "同意") + "】，完成后在输入“done”继续");
+				System.out.println("流程【" + flowTitle + "】审核故障，请手动审核为【" + (rejectPointCount == i ? "不同意" : "同意") + "】，完成后在输入“done”继续");
 				boolean continu=manual();
 				if(!continu) {
 					System.out.println("流程已中断！");

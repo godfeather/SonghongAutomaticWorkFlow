@@ -25,7 +25,7 @@ public class Args{
         recongnizedArgs.put("reject",new Argument("-R","--reject","运行驳回测试，并指定驳回间隔长度"));
         recongnizedArgs.put("sequence",new Argument("-s","--sequence","流程审核者队列，使用，隔开"));
         recongnizedArgs.put("parameter",new Argument("-P","--parameter","指定参数文件进行驱动程序"));
-        recongnizedArgs.put("lineIndex",new Argument("-l","--line","参数行指针，若指定参数文件时可选,默认0"));
+        recongnizedArgs.put("lineIndex",new Argument("-l","--line","参数行指针，若指定参数文件时可选,默认-1,表示不执行驳回"));
     }
     public Args(String[] args) {
         injectRecongnizedArgs();
