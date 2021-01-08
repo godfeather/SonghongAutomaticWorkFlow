@@ -217,7 +217,7 @@ public class Audit {
 					Thread.sleep(1000);
 					System.out.println("正在重新提交……");
 					if(i==tryingCount-1) {
-						System.out.println(tryingCount+"次等待失败，该流程未知是否已审核通过");
+						System.out.println("流程【" +title+ "】在" + tryingCount+"秒内未重新提交完成，请手动重新提交后输入“done”继续");
 					}
 				}
 			}
@@ -337,9 +337,18 @@ public class Audit {
 					return true;
 				}else {
 					Thread.sleep(1000);
-					System.out.println("正在提交流程……");
+					if (i == 0) {
+						System.out.println();
+					}
+					if (i % 2 == 0) {
+						System.out.print("正在检测流程审核是否提交成功……");
+						System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+					} else {
+						System.out.print("正在检测流程审核是否提交成功…");
+						System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+					}
 					if(i==tryingCount-1) {
-						System.out.println(tryingCount+"次等待失败，该流程未知是否已审核通过");
+						System.out.println("流程【" + title + "】在" + tryingCount+"秒内未审核完成，请手动审核为【" + (accept ? "同意": "不同意") + "】后输入“done”继续");
 					}
 				}
 			}
@@ -444,7 +453,7 @@ public class Audit {
 			}
 			width++;
 			if(i==li.size()-1) {
-				System.err.println("未找到\""+flowName+"\"流程!!");
+				System.err.println("未找到\""+flowName+"\"流程!");
 				return null;
 			}
 		}

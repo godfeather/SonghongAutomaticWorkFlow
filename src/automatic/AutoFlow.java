@@ -91,7 +91,6 @@ public class AutoFlow {
 				continue;
 			}
 			if(foundFlow == 0) {
-				// 流程第一个节点在下标为1处，所以+ 1
 				if(rejectPointCount == i) {
 					rejectPointCount += injectInterval2;
 					Audit.accept(false,flowTitle);
@@ -134,7 +133,7 @@ public class AutoFlow {
 				}else {
 					boolean b=Audit.accept(true,flowTitle);
 					if(!b) {
-						System.out.println("流程未成功审核，请手动审核，完成后在输入“done”继续");
+						System.out.println("流程【" + flowTitle + "】未审核完成，请手动审核【同意】，完成后在输入“done”继续");
 						boolean continu = manual();
 						if(! continu) {
 							System.out.println("流程已中断！");
@@ -145,7 +144,7 @@ public class AutoFlow {
 					}
 				}
 			}else{
-				System.out.println("流程审核故障，请根据程序给出的当前计划审核值（同意或不同意）手动完成审核操作，完成后在输入“done”继续");
+				System.out.println("流程审核故障，请手动审核为【" + (rejectPointCount == i ? "不同意" : "同意") + "】，完成后在输入“done”继续");
 				boolean continu=manual();
 				if(!continu) {
 					System.out.println("流程已中断！");
@@ -154,14 +153,6 @@ public class AutoFlow {
 				resetWebDriver(driverType);
 				continue;
 			}
-		}
-		System.out.println("正在校验流程是否结束……");
-		String status = Audit.getFlowStatusAfterAudit(flowTitle);
-		System.out.println("流程审核结束，校验流程状态是否显示已结束：【" + status + "】");
-		if ("结束".equals(status)) {
-			System.out.println("检验结果：流程已结束");
-		} else {
-			System.err.println("检验结果：流程未结束!");
 		}
 	}
 	public static void manualFlow(String name,String flowString,int rejectStep) {
