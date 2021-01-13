@@ -1,5 +1,5 @@
 create table mrright_songhongoa.dbo.flow(
-	name nvarchar(20),
+	name nvarchar(20) primary key,
 	flow nvarchar(300)
 )
 drop table flow;
@@ -25,7 +25,7 @@ insert into mrright_songhongoa.dbo.flow values
 ('报修','执行总监，综合办公室执行总监'),
 ('采购申请','执行总监，分管副总，采购负责人，课题负责人，会计1，会计2，综合办公室执行总监，总经理，采购负责人'),
 ('bom','执行总监，分管副总，总经理'),
-('成品','采购负责人，办公室执行总监，申请人，执行总监，行政助理'),
+('成品','采购负责人，综合办公室执行总监，申请人，执行总监，行政助理'),
 
 
 /*

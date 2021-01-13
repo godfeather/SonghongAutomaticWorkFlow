@@ -16,9 +16,9 @@ public class Routine {
 	 */
 	public static String databaseBrand;
 	static Statement form;
-	public static String user="sa";
-	public static String pwd="123";
-	public static String defaultHost="192.168.99.102:1433";
+	public static String user="";
+	public static String pwd="";
+	public static String defaultHost="";
 	public static FinalProcess<String, String> finalFlow(String[] cf,String fromer) {
 		if(cf==null||fromer==null) {
 			return null;

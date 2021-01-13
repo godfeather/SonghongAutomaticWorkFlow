@@ -45,10 +45,10 @@ public class AutoFlow {
 	 * @param workFlow
 	 */
 	public static  void plantFlowCore(String flowTitle,int injectInterval,FinalProcess<String,String> workFlow){
+		System.out.println("驳回步长：" + injectInterval);
 		int injectInterval2 = (injectInterval + 1);
 		int rejectPointCount = injectInterval2; // 拒绝点计数，每次拒绝后加1个拒绝间隔
 		System.out.println("流程标题：" + flowTitle);
-		System.out.println("驳回步长：" + injectInterval2);
 		try {
 			Audit.songhong.close();
 		}catch(Exception e){
@@ -176,9 +176,7 @@ public class AutoFlow {
 				timeunite="分钟";
 			}
 			System.out.println("\t\t【测试结束】】，本次消耗时间："+cast+timeunite);
-			System.out.println("\n本次流程审核的每个节点均由该次任务的执行者提供，测试脚本并未对提供的流程节点进行校核，"
-					+ "\n故不能作为流程节点正确的依据，若您确保流程节点正确并且在本次任务执行完成后检查了该流程状态已变为“结束”，"
-					+ "\n则可以认为该次流程节点正确（您需要确保），并且流程可以正常结束（本次任务已说明）");
+			System.out.println("\n本次流程审核的每个节点均由该次任务的执行者提供");
 			System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n\n\n");
 		}else {
 			System.out.println("流程格式无效,请重试!!");
