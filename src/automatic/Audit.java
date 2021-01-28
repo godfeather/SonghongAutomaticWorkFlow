@@ -33,7 +33,7 @@ public class Audit {
 		login("org","0000");
 		debug = true;
 		//Audit.dateStamp = "2021-01-10 16:43:00";
-		clickFlowCe("12222");
+		clickFlowCe("林瑜-付款");
 		accept(true,"12222");
 	}
 	public static boolean login(String user,String pwd) {
@@ -78,8 +78,10 @@ public class Audit {
         while (true) {
             try {
 				js.executeScript("$(\"#021a59b0-2589-4f9e-8140-6052177a967c\").click();");
+				logD("已打开“代办任务”列表");
 				break;
 			} catch (Exception e) {
+				logD("打开代办列表失败，正在重试...");
             	e.printStackTrace();
 			}
 		}
@@ -87,9 +89,10 @@ public class Audit {
 		while (true) {
 			try {
 				songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
+				logD("web content已切换到待办列表所对应的iframe");
 				break;
 			} catch (Exception e) {
-
+				logD("试图切换web content到待办列表所对应的iframe失败，正在重试...");
 			}
 		}
 		// 以下为增强实现
@@ -99,24 +102,18 @@ public class Audit {
 			try {
 				loadingLayer = songhong.findElement(By.id("jfgrid_loading_girdtable1"));
 			} catch (Exception e) {
-				if (debug) {
-					System.out.println("判断列表是否加载的标志元素未找到，正在重试");
-				}
+				logD("判断列表是否加载的标志元素未找到，正在重试");
 			    continue;
 			}
 			String display = loadingLayer.getCssValue("display");
 			if (loadingFlag == 0) {
 				if (!"none".equals(display)) {
-					if (debug) {
-						System.out.println("列表开始加载，正在等待其加载结束");
-					}
+					logD("列表开始加载，正在等待其加载结束");
 					loadingFlag = 1;
 				}
 			} else {
 			    if ("none".equals(display)) {
-			        if (debug) {
-			            System.out.println("列表加载完成");
-					}
+			        logD("列表加载完成");
 			        break;
 				}
 			}
@@ -290,36 +287,50 @@ public class Audit {
 			List<WebElement> web=songhong.findElements(By.tagName("iframe"));
 			WebElement iframe=web.get(web.size()-1);
 			songhong.switchTo().frame(iframe);
-			while(true) {
-				try {
-					//trying(By.id("verify"),true);
+			while (true) {
+			    try {
 					songhong.findElement(By.id("verify")).click();
-					songhong.switchTo().defaultContent();
-					trying( By.id("layui-layer-iframe1"));
 					break;
-				}catch(Exception e) {
-					if(debug) {
-						e.printStackTrace();
-					}
-					songhong.switchTo().frame(iframe);
+				} catch (Exception e) {
+			        logD("点击“审核流程”按钮失败，正在重新尝试");
 				}
 			}
-			trying(By.id("layui-layer-iframe1"));
-			songhong.switchTo().frame("layui-layer-iframe1");
+            songhong.switchTo().defaultContent();
+			for (int i = 0;; i ++) { // 判断点击审核按钮后是否打开审核流程的窗口（可能因某些原因无法打开）
+			    try {
+					songhong.findElement(By.className("layui-layer-iframe"));
+					logD("已检测到审核窗口被打开");
+					break;
+				}catch (Exception e) {
+			        logD("未检测到审核窗口打开，正在重试。。。");
+				}
+				if (i >= 100) {
+				    logD("在指定次数的检测中仍未打开审核窗口,已放弃");
+					return false;
+				}
+			}
+			while (true) {
+			    try {
+					WebElement auditFormIframe = songhong.findElement(By.id("AuditFlowForm")).findElement(By.tagName("iframe"));
+					songhong.switchTo().frame(auditFormIframe.getAttribute("id"));
+					logD("Web content已成功切换至审核表单iframe");
+					break;
+				} catch (Exception e) {
+			        logD("审核表单所对应的iframe未找到，正在重试...");
+				}
+			}
 			JavascriptExecutor js=(JavascriptExecutor)songhong;
 
 			while(true){
 				try{
 					js.executeScript("$(\"#lr_form_bg\").hide()");
+					logD("元素已成功隐藏");
 					break;
 				}catch(Exception e){
-					if(debug) {
-						e.printStackTrace();
-						System.out.println("js执行失败，隐藏元素失败");
-					}
+					logD("js执行失败，正在重试...");
 				}
 			}
-			Thread.sleep(wait);
+			//Thread.sleep(wait);
 			WebElement we=null;
 			while(true){
 				try{
@@ -358,20 +369,16 @@ public class Audit {
 				}
 			}
 			songhong.switchTo().defaultContent();
-			songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
-			while(true) {								//检测重新提交窗口是否关闭
-				try {
-					songhong.findElement(By.className("layui-layer-iframe1"));			//抛出异常说明未找到元素直接跳出如果找到提交对话框说明提交未成功则重新提交
-					try {
-						songhong.findElement(By.id("layui-layer1")).findElement(By.className("layui-layer-btn0")).click();
-					}catch(Exception e) {
-						e.printStackTrace();
-					}
-				}catch(Exception e) {
-					if(debug) {
-						e.printStackTrace();
-					}
+			for (int i = 0;;i ++) {
+			    try {
+					songhong.findElement(By.className("layui-layer-iframe")).findElement(By.className("layui-layer-btn0")).click();
+					logD("审核窗口已正确关闭");
 					break;
+				} catch (Exception e) {
+			        logD("检测到审核窗口未关闭，正在重试...");
+				}
+			    if (i > 100) {
+			        return false;
 				}
 			}
 			for(int i=0;i<tryingCount;i++) {	//等待审核完毕返回任务页
@@ -386,37 +393,24 @@ public class Audit {
 					continue;
 				}
 				if(id.equals("lr_tab_021a59b0-2589-4f9e-8140-6052177a967c")) {
-					if(debug) {
-						System.out.println("审核成功，因为当前激活frame与任务列表id相同");
-					}
-					System.out.println("流程审核成功");
+					logD("检测到流程已成功审核");
 					return true;
 				}else {
 					Thread.sleep(1000);
-					if (i == 0) {
-						System.out.println();
-					}
-					if (i % 2 == 0) {
-						System.out.println("正在检测流程审核是否提交成功……");
-					} else {
-						System.out.println("正在检测流程审核是否提交成功…");
-					}
+						String out = "正在重新检查流程状态..(检查会在" + (tryingCount - i) + "次后退出)";
+						cleanScreenLine(out.length() + 20);
+						System.out.print(out);
 					if(i==tryingCount-1) {
-						System.out.println("流程【" + title + "】在" + tryingCount+"秒内未审核完成，请手动审核为【" + (accept ? "同意": "不同意") + "】后输入“done”继续");
+						cleanScreenLine(out.length() + 20);
+						System.out.println("流程【" + title + "】在" + tryingCount+"次检查期间内未完成审核，请手动审核为【" + (accept ? "同意": "不同意") + "】后输入“done”继续");
 					}
 				}
 			}
 		}catch(Exception e) {
 			if(debug) {
-				e.printStackTrace();
+			    logD("未预期的错误: " + e.getMessage());
 			}
 			return false;
-		}
-		try {
-			Thread.sleep(wait);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return false;
 	}
@@ -512,5 +506,27 @@ public class Audit {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 检查流程节点
+	 */
+	public static void checkFLow() {
+
+	}
+
+	/**
+	 * 调试日志信息
+	 * @param str 输入内容
+	 */
+	public static void logD(String str) {
+	    if (debug) {
+			System.out.println(str);
+		}
+	}
+	public static void cleanScreenLine (int charCount) {
+	    for (int i = 0;i < charCount; i ++) {
+			System.out.print("\b");
+		}
 	}
 }
