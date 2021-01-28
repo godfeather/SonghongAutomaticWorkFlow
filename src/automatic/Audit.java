@@ -33,8 +33,17 @@ public class Audit {
 		login("org","0000");
 		debug = true;
 		//Audit.dateStamp = "2021-01-10 16:43:00";
-		clickFlowCe("林瑜-付款");
-		accept(true,"12222");
+        if (clickFlowCe("领用-林瑜") == 0) {
+			boolean su = accept(true,"");
+			if (su) {
+				if (checkFlowShouldInUndealtListAfterAccept("领用-林瑜","李丹","赵艳")) {
+					logD("没问题");
+				} else {
+					logD("与预期不符");
+				}
+			}
+		}
+
 	}
 	public static boolean login(String user,String pwd) {
 		debug=Properties.getParameter("debug")!=null&&Properties.getParameter("debug").equals("true")?true:false;
@@ -68,31 +77,15 @@ public class Audit {
 	 * @return 审核状态 0 表示成功 -1 表示失败未找到
 	 */
 	public static int clickFlowCe(String title) {			//根据流程名选中流程
-		try {
-			Thread.sleep(wait);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		JavascriptExecutor js=(JavascriptExecutor)songhong;
         while (true) {
             try {
 				js.executeScript("$(\"#021a59b0-2589-4f9e-8140-6052177a967c\").click();");
+				songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
 				logD("已打开“代办任务”列表");
 				break;
 			} catch (Exception e) {
 				logD("打开代办列表失败，正在重试...");
-            	e.printStackTrace();
-			}
-		}
-		//trying( By.id("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c"));
-		while (true) {
-			try {
-				songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
-				logD("web content已切换到待办列表所对应的iframe");
-				break;
-			} catch (Exception e) {
-				logD("试图切换web content到待办列表所对应的iframe失败，正在重试...");
 			}
 		}
 		// 以下为增强实现
@@ -125,8 +118,9 @@ public class Audit {
 			System.err.println("未找到为何数据，该用户的任务列表未空！");
 			return -1;
 		}
-		WebElement worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
+		WebElement worksta=songhong.findElements(By.className("jfgrid-scrollarea-content")).get(1);
 		List<WebElement> li=worksta.findElements(By.className("jfgrid-data-cell"));
+		logD("任务列表长度: " + li.size());
 		int width=9;
 		for(int i=2;i<li.size();i++) {
 			if(width==9) {
@@ -191,6 +185,84 @@ public class Audit {
 		}
 		return -1;
 	}
+
+	/**
+	 * 检查流程在审核后是否应该在待办列表中,
+	 * @return 返回值为true表示正确，false表示不正确
+	 * @param title 流程标题
+	 * @param current 当前审核者
+	 * @param next 下一个审核者
+	 */
+	public static boolean checkFlowShouldInUndealtListAfterAccept (String title,String current,String next) {
+		while (true) {
+			try {
+				songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
+				logD("web content已切换到待办列表所对应的iframe");
+				break;
+			} catch (Exception e) {
+				logD("试图切换web content到待办列表所对应的iframe失败，正在重试...");
+			}
+		}
+		int loadingFlag = 1; // 0表示未加载，1表示正在加载
+		while (true) { // 等待显示正在加载的窗口
+			WebElement loadingLayer = null;
+			try {
+				loadingLayer = songhong.findElement(By.id("jfgrid_loading_girdtable1"));
+			} catch (Exception e) {
+				logD("判断列表是否加载的标志元素未找到，正在重试");
+				continue;
+			}
+			String display = loadingLayer.getCssValue("display");
+			if (loadingFlag == 0) {
+				if (!"none".equals(display)) {
+					logD("列表开始加载，正在等待其加载结束");
+					loadingFlag = 1;
+				}
+			} else {
+				if ("none".equals(display)) {
+					logD("列表加载完成");
+					break;
+				}
+			}
+		}
+		WebElement worksta = songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
+		List<WebElement> li = worksta.findElements(By.className("jfgrid-data-cell"));
+		int width=9;
+		for(int i=2;i<li.size();i++) {
+			if(width==9) {
+				String ftitle=null;
+				while(true) {
+					try {
+						ftitle=li.get(i).getText();
+						break;
+					}catch(StaleElementReferenceException e) {
+					    logD("元素过期，正在重新尝试");
+						worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
+						li=worksta.findElements(By.className("jfgrid-data-cell"));
+					}
+				}
+
+				if(ftitle.equals(title)) {
+					String time = li.get(i + 4).getText();
+					if (dateStamp != null && dateStamp.equals(time) || dateStamp == null) { // 时间与预期一致或时间未登记都可以审核
+						if (current.equals(next)) {
+						    return true;
+						}
+					} else { // 时间已登记但与当前检索流程的时间不一致
+					}
+
+				}
+				width=0;
+			}
+			width++;
+		}
+		if (current.equals(next)) {
+		    return false;
+		} else {
+			return true;
+		}
+	}
+
 
 	public static void shut() {
 		if(songhong!=null) {
@@ -290,6 +362,7 @@ public class Audit {
 			while (true) {
 			    try {
 					songhong.findElement(By.id("verify")).click();
+					logD("点击成功");
 					break;
 				} catch (Exception e) {
 			        logD("点击“审核流程”按钮失败，正在重新尝试");
@@ -387,7 +460,6 @@ public class Audit {
 					id=songhong.findElement(By.className("active")).getAttribute("id");
 				}catch(Exception e) {
 					if(debug) {
-						e.printStackTrace();
 						System.out.println("验证是否审核通过时，active抛出异常，详情查看异常内容");
 					}
 					continue;

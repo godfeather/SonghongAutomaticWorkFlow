@@ -106,8 +106,7 @@ public class Main {
             try {
                 step = Integer.parseInt(rejectStep.trim());
             }catch (Exception e) {
-                System.out.println("驳回步长必须为整数");
-                return;
+                step = 0;
             }
         }
         AutoFlow.manualFlow(workflowTitle,workflow,step);
@@ -135,8 +134,7 @@ public class Main {
             try {
                 abortFrom = Integer.parseInt(abort.trim());
             }catch (Exception e) {
-                System.out.println("驳回步长必须为整数");
-                return;
+                abortFrom = 0;
             }
         }
         AutoFlow.autoFlow(flowName, fromer,CustomflowName,abortFrom);

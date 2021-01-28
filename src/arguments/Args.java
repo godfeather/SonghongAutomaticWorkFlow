@@ -12,21 +12,30 @@ public class Args{
     private JsonObject __param;
     private JsonObject _param;
     private JsonArray list;
-    static HashMap<String,Argument> recongnizedArgs = new HashMap<String, Argument>();
+    static HashMap<String,Argument> recognizedArgs = new HashMap<String, Argument>();
+    static ArrayList<String> sorter = new ArrayList<String>();
+
+    /**
+     * 使命令行帮助以添加的顺序显示
+     */
+    static void putArgToSorter (String key,Argument arg) {
+        recognizedArgs.put(key,arg);
+        sorter.add(key);
+    }
     static void injectRecongnizedArgs () {
-        recongnizedArgs.put("help",new Argument("-h","--help","帮助"));
-        recongnizedArgs.put("mode",new Argument("-m","--mode","调用模式,有效值：auto,calc,manual"));
-        recongnizedArgs.put("connectionString",new Argument("-c","--connectionStr","数据库ip:port"));
-        recongnizedArgs.put("user",new Argument("-u","--user","数据库用户名"));
-        recongnizedArgs.put("password",new Argument("-p","--pwd","数据库密码"));
-        recongnizedArgs.put("title",new Argument("-t","--title","流程标题"));
-        recongnizedArgs.put("name",new Argument("-n","--name","流程名称"));
-        recongnizedArgs.put("reason",new Argument("-r","--reason","发起者"));
-        recongnizedArgs.put("reject",new Argument("-R","--reject","运行驳回测试，并指定驳回间隔长度"));
-        recongnizedArgs.put("sequence",new Argument("-s","--sequence","流程审核者队列，使用，隔开"));
-        recongnizedArgs.put("parameter",new Argument("-P","--parameter","指定参数文件进行驱动程序"));
-        recongnizedArgs.put("lineIndex",new Argument("-l","--line","参数行指针，若指定参数文件时可选,默认-1,表示不执行驳回"));
-        recongnizedArgs.put("creationTime",new Argument("-T","--creation-time","指定流程的创建时间，若指定，则查找流程时满足流程title和创建时间同时相同的流程才会被视为找到，否则认定为流程不存在"));
+        putArgToSorter("mode",new Argument("-m","--mode","调用模式,有效值：auto(自动计算并根据计算结果开始自动审核流程),calc(查看流程序列计算结果),manual(自动审核，但无流程计算)"));
+        putArgToSorter("name",new Argument("-n","--name","数据库中的流程名称"));
+        putArgToSorter("title",new Argument("-t","--title","被测系统中已发起流程的流程标题"));
+        putArgToSorter("reason",new Argument("-r","--reason","流程发起者"));
+        putArgToSorter("reject",new Argument("-R","--reject","执行驳回测试，并指定驳回间隔,指定无效值时使用默认（无间隔）"));
+        putArgToSorter("sequence",new Argument("-s","--sequence","流程审核者队列，使用，隔开"));
+        putArgToSorter("creationTime",new Argument("-T","--creation-time","指定流程的创建时间，若指定，则查找流程时满足流程title和创建时间同时相同的流程才会被视为找到，否则认定为流程不存在"));
+        putArgToSorter("parameter",new Argument("-P","--parameter","指定参数文件进行驱动程序"));
+        putArgToSorter("lineIndex",new Argument("-l","--line","参数行指针，若指定参数文件时可选,默认-1,表示不执行驳回"));
+        putArgToSorter("connectionString",new Argument("-c","--connectionStr","数据库ip:port"));
+        putArgToSorter("user",new Argument("-u","--user","数据库用户名"));
+        putArgToSorter("password",new Argument("-p","--pwd","数据库密码"));
+        putArgToSorter("help",new Argument("-h","--help","帮助"));
     }
     public Args(String[] args) {
         injectRecongnizedArgs();
@@ -52,7 +61,7 @@ public class Args{
      * @return
      */
     public String getValue (String id) {
-        Argument ar = recongnizedArgs.get(id);
+        Argument ar = recognizedArgs.get(id);
         if (ar == null) {
             return null;
         }
@@ -75,10 +84,9 @@ public class Args{
         return null;
     }
     public void printHelp () {
-        Set<String> keys = recongnizedArgs.keySet();
-        Iterator<String> it = keys.iterator();
+        Iterator<String> it = sorter.iterator();
         while (it.hasNext()) {
-            Argument ar = recongnizedArgs.get(it.next());
+            Argument ar = recognizedArgs.get(it.next());
             String help = "";
             String _p = ar._paramName;
             String __p = ar.__paramName;
