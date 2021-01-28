@@ -35,6 +35,7 @@ public class Args{
         putArgToSorter("connectionString",new Argument("-c","--connectionStr","数据库ip:port"));
         putArgToSorter("user",new Argument("-u","--user","数据库用户名"));
         putArgToSorter("password",new Argument("-p","--pwd","数据库密码"));
+        putArgToSorter("extraCheck",new Argument("-e","--extra-check","执行额外检查，若指定该选项，则会花费更多时间执行其他校验,并在错误时提示校验结果"));
         putArgToSorter("help",new Argument("-h","--help","帮助"));
     }
     public Args(String[] args) {

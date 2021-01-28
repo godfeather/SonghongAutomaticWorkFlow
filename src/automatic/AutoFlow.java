@@ -145,6 +145,21 @@ public class AutoFlow {
 						}
 						resetWebDriver(driverType);
 						continue;
+					} else {
+					    String current = workFlow.getValue(i);
+					    String next = i == workFlow.size() - 1 ? "no need auditor" : workFlow.getValue(i + 1);
+						boolean suc = Audit.checkFlowShouldInUndealtListAfterAccept(flowTitle,current,next);
+						if (suc) {
+						} else {
+							System.out.println("当前审核者为[" + current + "]，下一个审核者为[" + next + "],待办列表中可能与预期不符;\n流程“" + flowTitle + "”不应该出现在待办列表或必须出现在待办列表中; 请确认问题; \t--输入“done”继续");
+							boolean continu = manual();
+							if(! continu) {
+								System.out.println("流程已取消审核");
+								return;
+							}
+							resetWebDriver(driverType);
+							continue;
+						}
 					}
 				}
 			}else{

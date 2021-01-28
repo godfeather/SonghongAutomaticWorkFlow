@@ -157,7 +157,7 @@ public class Main {
             ArrayList<String>s=new ArrayList<>();
             s.add("序号");
             s.add("流程名称(Process)");
-            s.add("审核者(Auditer)");
+            s.add("审核者(Auditor)");
             process.add(s);
             for(int i=0;i<sh.size();i++) {
                 ArrayList<String>p=new ArrayList<>();

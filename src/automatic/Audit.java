@@ -25,6 +25,7 @@ public class Audit {
 	public static int tryingCount=15;
 	public static long wait=1000;
 	public static WebDriver songhong;
+	public static extra
 	public static WebDriverWait waiter;
 	public static void main(String[] args) {
 		System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "selenium_firefox.log");
