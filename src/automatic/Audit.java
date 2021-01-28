@@ -15,6 +15,11 @@ import org.w3c.dom.Element;
 import Collection.Properties;
 public class Audit {
 	static boolean debug=false;
+	public static String dateStamp;
+	/** 页面中流程的创建时间；(dateStamp为空时登记时间戳，不验证)
+	 * 后续都会审核相同的时间戳并且标题相同的流程,列表中找到相同标题的流程但时间戳不一致也视为流程未找到；
+	 * 用于确保整个流程中对同一个流程进行审核
+	 */
 	public static String loginHome="http://t1.itsmore.com:62046/Login/Index";
 	public static int loginTryingCount=5;
 	public static int tryingCount=15;
@@ -25,6 +30,11 @@ public class Audit {
 		System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "selenium_firefox.log");
 		songhong=new FirefoxDriver();
 		waiter=new WebDriverWait(songhong, 5);
+		login("org","0000");
+		debug = true;
+		//Audit.dateStamp = "2021-01-10 16:43:00";
+		clickFlowCe("12222");
+		accept(true,"12222");
 	}
 	public static boolean login(String user,String pwd) {
 		debug=Properties.getParameter("debug")!=null&&Properties.getParameter("debug").equals("true")?true:false;
@@ -32,7 +42,6 @@ public class Audit {
 		try {
 			songhong.findElement(By.id("lr_username")).sendKeys(user);
 			songhong.findElement(By.id("lr_password")).sendKeys(pwd);
-			Thread.sleep(wait);
 			songhong.findElement(By.id("lr_login_btn")).click();
 		}catch(Exception e) {
 			if(debug) {
@@ -58,7 +67,7 @@ public class Audit {
 	 * @param title 流程标题
 	 * @return 审核状态 0 表示成功 -1 表示失败未找到
 	 */
-	public static int clickFlowCe(String title) {			//根据流程名选中
+	public static int clickFlowCe(String title) {			//根据流程名选中流程
 		try {
 			Thread.sleep(wait);
 		} catch (InterruptedException e1) {
@@ -66,13 +75,53 @@ public class Audit {
 			e1.printStackTrace();
 		}
 		JavascriptExecutor js=(JavascriptExecutor)songhong;
-		trying( By.className("lr-menu-item-icon"));
-		js.executeScript("$(\"#021a59b0-2589-4f9e-8140-6052177a967c\").click();");
-		try {
-			Thread.sleep(wait);
-		} catch (InterruptedException e2) {}
-		trying( By.id("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c"));
-		songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
+        while (true) {
+            try {
+				js.executeScript("$(\"#021a59b0-2589-4f9e-8140-6052177a967c\").click();");
+				break;
+			} catch (Exception e) {
+            	e.printStackTrace();
+			}
+		}
+		//trying( By.id("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c"));
+		while (true) {
+			try {
+				songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
+				break;
+			} catch (Exception e) {
+
+			}
+		}
+		// 以下为增强实现
+        int loadingFlag = 0; // 0表示未加载，1表示正在加载
+		while (true) { // 等待显示正在加载的窗口
+			WebElement loadingLayer = null;
+			try {
+				loadingLayer = songhong.findElement(By.id("jfgrid_loading_girdtable1"));
+			} catch (Exception e) {
+				if (debug) {
+					System.out.println("判断列表是否加载的标志元素未找到，正在重试");
+				}
+			    continue;
+			}
+			String display = loadingLayer.getCssValue("display");
+			if (loadingFlag == 0) {
+				if (!"none".equals(display)) {
+					if (debug) {
+						System.out.println("列表开始加载，正在等待其加载结束");
+					}
+					loadingFlag = 1;
+				}
+			} else {
+			    if ("none".equals(display)) {
+			        if (debug) {
+			            System.out.println("列表加载完成");
+					}
+			        break;
+				}
+			}
+		}
+		// 以上为增强实现
 		try {
 			trying( By.className("jfgrid-data-cell"));
 		}catch(Exception e) {
@@ -83,7 +132,6 @@ public class Audit {
 		List<WebElement> li=worksta.findElements(By.className("jfgrid-data-cell"));
 		int width=9;
 		for(int i=2;i<li.size();i++) {
-
 			if(width==9) {
 				String ftitle=null;
 				while(true) {
@@ -102,31 +150,39 @@ public class Audit {
 				}
 
 				if(ftitle.equals(title)) {
-					while(true) {
-						try {
-							li.get(i).click();
-							songhong.findElement(By.id("lr_verify")).click();
+					String time = li.get(i + 4).getText();
+					if (dateStamp != null && dateStamp.equals(time) || dateStamp == null) { // 时间与预期一致或时间未登记都可以审核
+					    if (dateStamp == null) {
+							dateStamp = time;
+						}
+						while(true) {
+							try {
+								li.get(i).click();
+								songhong.findElement(By.id("lr_verify")).click();
 
-						}catch(Exception e) {
-							if(debug) {
-								e.printStackTrace();
+							}catch(Exception e) {
+								if(debug) {
+									e.printStackTrace();
+								}
+							}
+							songhong.switchTo().defaultContent();
+							String str=songhong.findElement(By.className("active")).getAttribute("id");
+							if((str.equals("lr_tab_021a59b0-2589-4f9e-8140-6052177a967c"))) {
+								try {
+									Thread.sleep(wait);
+								} catch (InterruptedException e) {}
+								songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
+								trying( By.className("jfgrid-data-cell"));
+								worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
+								li=worksta.findElements(By.className("jfgrid-data-cell"));
+							}else {
+								break;
 							}
 						}
-						songhong.switchTo().defaultContent();
-						String str=songhong.findElement(By.className("active")).getAttribute("id");
-						if((str.equals("lr_tab_021a59b0-2589-4f9e-8140-6052177a967c"))) {
-							try {
-								Thread.sleep(wait);
-							} catch (InterruptedException e) {}
-							songhong.switchTo().frame("lr_iframe_021a59b0-2589-4f9e-8140-6052177a967c");
-							trying( By.className("jfgrid-data-cell"));
-							worksta=songhong.findElement(By.id("jfgrid_scrollarea_girdtable1"));
-							li=worksta.findElements(By.className("jfgrid-data-cell"));
-						}else {
-							break;
-						}
+						return 0;
+					} else { // 时间已登记但与当前检索流程的时间不一致
 					}
-					return 0;
+
 				}
 				width=0;
 			}
@@ -236,7 +292,7 @@ public class Audit {
 			songhong.switchTo().frame(iframe);
 			while(true) {
 				try {
-					trying(By.id("verify"),true);
+					//trying(By.id("verify"),true);
 					songhong.findElement(By.id("verify")).click();
 					songhong.switchTo().defaultContent();
 					trying( By.id("layui-layer-iframe1"));
@@ -341,11 +397,9 @@ public class Audit {
 						System.out.println();
 					}
 					if (i % 2 == 0) {
-						System.out.print("正在检测流程审核是否提交成功……");
-						System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+						System.out.println("正在检测流程审核是否提交成功……");
 					} else {
-						System.out.print("正在检测流程审核是否提交成功…");
-						System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+						System.out.println("正在检测流程审核是否提交成功…");
 					}
 					if(i==tryingCount-1) {
 						System.out.println("流程【" + title + "】在" + tryingCount+"秒内未审核完成，请手动审核为【" + (accept ? "同意": "不同意") + "】后输入“done”继续");

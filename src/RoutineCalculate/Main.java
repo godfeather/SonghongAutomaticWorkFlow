@@ -1,7 +1,6 @@
 package RoutineCalculate;
 import java.io.*;
 import java.util.ArrayList;
-
 import arguments.Args;
 import automatic.Audit;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -16,6 +15,7 @@ public class Main {
         Properties.reload();
         Properties.loadProperties();
         String file = arg.getValue("parameter");
+        Audit.dateStamp = arg.getValue("creationTime");
         String params = "";
         BufferedReader br = null;
         if (file != null) {

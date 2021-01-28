@@ -33,6 +33,7 @@ public class AutoFlow {
 		}
 		System.out.println(">>>>>>>>测试结束，本次消耗时间："+cast+timeunite);
 		System.out.println("\n流程标题："+flowTitle);
+		System.out.println("\n流程创建时间："+ Audit.dateStamp);
 		System.out.println("\n发起者："+fromer);
 		System.out.println("\n流程名称："+flowName);
 		System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n\n\n");
@@ -48,7 +49,7 @@ public class AutoFlow {
 		System.out.println("驳回步长：" + injectInterval);
 		int injectInterval2 = (injectInterval + 1);
 		int rejectPointCount = injectInterval2; // 拒绝点计数，每次拒绝后加1个拒绝间隔
-		System.out.println("流程标题：" + flowTitle);
+		System.out.println("流程标识：" + flowTitle + "-" + Audit.dateStamp);
 		try {
 			Audit.songhong.close();
 		}catch(Exception e){
@@ -81,10 +82,11 @@ public class AutoFlow {
 			if(login_suc) {
 				foundFlow = Audit.clickFlowCe(flowTitle);
 			}else{
-				System.out.println("用户登录失败，请手动登录，完成后再输入“done”继续");
+				System.out.println("登录失败，请登录账号“"+auditer+"”并审核流程创建时间为[" + Audit.dateStamp + "],标题为【" +flowTitle+ "】的流程," +
+						"\n本次需要审核的结果为：“" + ((rejectPointCount == i) ? "不同意" : "同意") + "”请手动完成后输入“done”继续；");
 				boolean continu=manual();
 				if(!continu){
-					System.out.println("流程已中断！");
+					System.out.println("流程已取消审核");
 					return;
 				}
 				resetWebDriver(driverType);
@@ -100,17 +102,19 @@ public class AutoFlow {
 						int initFoundFlow = Audit.clickFlowCe(flowTitle);
 						if (initFoundFlow == 0) {
 						} else  {
-							System.out.println("驳回后发起者列表中未找到流程：【" + flowTitle + "】，请手动完成操作后输入“done”继续");
+							System.out.println("流程发起者未找到创建时间为[" + Audit.dateStamp + "],流程标题为【" + flowTitle + "】的流程，" +
+									"\n本次需要审核的结果为“不同意”,请手动完成后输入“done”继续");
 							boolean continu=manual();
 							if(!continu) {
-								System.out.println("流程已中断！");
+								System.out.println("流程已取消审核");
 								return;
 							}
 							resetWebDriver(driverType);
 							continue;
 						}
 					} else {
-						System.out.println("用户登录失败，请手动登录，完成后再输入“done”继续");
+						System.out.println("登录失败，请登录账号“"+auditer+"”并审核流程创建时间为[" + Audit.dateStamp + "],标题为【" +flowTitle+ "】的流程," +
+								"\n本次需要审核的结果为“不同意”请手动完成后输入“done”继续；");
 						boolean continu=manual();
 						if(!continu){
 							System.out.println("流程已中断！");
@@ -121,7 +125,7 @@ public class AutoFlow {
 					}
 					boolean b = Audit.resubmit(flowTitle);
 					if(!b) {
-						System.out.println("试图重新提交流程【" + flowTitle + "】时失败，请手动完成后输入\"done\"继续。");
+						System.out.println("试图重新提交流程【" + flowTitle + "】失败，请手动完成后输入\"done\"继续。");
 						boolean continu=manual();
 						if(!continu) {
 							System.out.println("流程已中断！");
@@ -133,10 +137,10 @@ public class AutoFlow {
 				}else {
 					boolean b=Audit.accept(true,flowTitle);
 					if(!b) {
-						System.out.println("流程【" + flowTitle + "】未审核完成，请手动审核【同意】，完成后在输入“done”继续");
+						System.out.println("流程【" + flowTitle + "】未审核完成,本次需要审核的结果为“同意”，请手动完成后输入“done”继续");
 						boolean continu = manual();
 						if(! continu) {
-							System.out.println("流程已中断！");
+							System.out.println("流程已取消审核");
 							return;
 						}
 						resetWebDriver(driverType);
@@ -144,7 +148,7 @@ public class AutoFlow {
 					}
 				}
 			}else{
-				System.out.println("流程【" + flowTitle + "】审核故障，请手动审核为【" + (rejectPointCount == i ? "不同意" : "同意") + "】，完成后在输入“done”继续");
+				System.out.println("流程【" + flowTitle + "】审核失败，本次需要审核的结果为“" + (rejectPointCount == i ? "不同意" : "同意") + "“，请手动完成后输入“done”继续");
 				boolean continu=manual();
 				if(!continu) {
 					System.out.println("流程已中断！");
@@ -156,7 +160,10 @@ public class AutoFlow {
 		}
 	}
 	public static void manualFlow(String name,String flowString,int rejectStep) {
-		if(flowString.contains("，")) {
+	    if (flowString.trim().equals("")) {
+			System.out.println("流程名不能为空！");
+	        return;
+		}
 			String[]str=flowString.split("，");
 			FinalProcess<String,String> proc=new FinalProcess<String, String>();
 			for(int i=0;i<str.length;i++) {
@@ -175,12 +182,9 @@ public class AutoFlow {
 				cast=cast/60;
 				timeunite="分钟";
 			}
-			System.out.println("\t\t【测试结束】】，本次消耗时间："+cast+timeunite);
+			System.out.println("\t\t【测试结束】，本次消耗时间："+cast+timeunite);
 			System.out.println("\n本次流程审核的每个节点均由该次任务的执行者提供");
 			System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n\n\n");
-		}else {
-			System.out.println("流程格式无效,请重试!!");
-		}
 	}
 	public static boolean manual() {
 		Scanner s=new Scanner(System.in);

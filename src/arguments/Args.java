@@ -26,6 +26,7 @@ public class Args{
         recongnizedArgs.put("sequence",new Argument("-s","--sequence","流程审核者队列，使用，隔开"));
         recongnizedArgs.put("parameter",new Argument("-P","--parameter","指定参数文件进行驱动程序"));
         recongnizedArgs.put("lineIndex",new Argument("-l","--line","参数行指针，若指定参数文件时可选,默认-1,表示不执行驳回"));
+        recongnizedArgs.put("creationTime",new Argument("-T","--creation-time","指定流程的创建时间，若指定，则查找流程时满足流程title和创建时间同时相同的流程才会被视为找到，否则认定为流程不存在"));
     }
     public Args(String[] args) {
         injectRecongnizedArgs();
