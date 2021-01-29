@@ -16,6 +16,8 @@ public class Main {
         Properties.loadProperties();
         String file = arg.getValue("parameter");
         Audit.dateStamp = arg.getValue("creationTime");
+        Audit.debug = arg.isSeted("debugger");
+        Audit.extraCheck = arg.isSeted("extraCheck");
         String params = "";
         BufferedReader br = null;
         if (file != null) {
@@ -56,7 +58,6 @@ public class Main {
                 arg = new Args(paramss[lineI].split(" "));
             }
         }
-
         String help = arg.getValue("help");
         if (help != null) {
             arg.printHelp();

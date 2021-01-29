@@ -14,7 +14,7 @@ import org.w3c.dom.Element;
 
 import Collection.Properties;
 public class Audit {
-	static boolean debug=false;
+	public static boolean debug=false;
 	public static String dateStamp;
 	/** 页面中流程的创建时间；(dateStamp为空时登记时间戳，不验证)
 	 * 后续都会审核相同的时间戳并且标题相同的流程,列表中找到相同标题的流程但时间戳不一致也视为流程未找到；
@@ -25,7 +25,7 @@ public class Audit {
 	public static int tryingCount=15;
 	public static long wait=1000;
 	public static WebDriver songhong;
-	public static extra
+	public static boolean extraCheck = false;
 	public static WebDriverWait waiter;
 	public static void main(String[] args) {
 		System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "selenium_firefox.log");
@@ -142,7 +142,12 @@ public class Audit {
 				}
 
 				if(ftitle.equals(title)) {
-					String time = li.get(i + 4).getText();
+					String time = null;
+					try {
+						time = li.get(i + 4).getText();
+					} catch (Exception e){
+						logD("获取流程的发起时间时元素已过期");
+					}
 					if (dateStamp != null && dateStamp.equals(time) || dateStamp == null) { // 时间与预期一致或时间未登记都可以审核
 					    if (dateStamp == null) {
 							dateStamp = time;

@@ -35,7 +35,9 @@ public class Args{
         putArgToSorter("connectionString",new Argument("-c","--connectionStr","数据库ip:port"));
         putArgToSorter("user",new Argument("-u","--user","数据库用户名"));
         putArgToSorter("password",new Argument("-p","--pwd","数据库密码"));
-        putArgToSorter("extraCheck",new Argument("-e","--extra-check","执行额外检查，若指定该选项，则会花费更多时间执行其他校验,并在错误时提示校验结果"));
+        putArgToSorter("extraCheck",new Argument("-e","--extra-check","执行额外检查，若指定该选项，则会花费更多时间执行其他校验,并在错误时提示校验结果;执行额外检查时，会执行下列检查：" +
+                "\n\t √ 本轮审核完毕后检查代办列表中，若下一个审核者不是当前人员时，列表中该流程是否消失；或下一个审核者为当前审核者时，列表中该流程是否继续展示"));
+        putArgToSorter("debugger",new Argument("-d","--debugger","显示调试输出"));
         putArgToSorter("help",new Argument("-h","--help","帮助"));
     }
     public Args(String[] args) {
