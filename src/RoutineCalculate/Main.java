@@ -63,12 +63,17 @@ public class Main {
             arg.printHelp();
             return;
         }
+        Routine.connect(arg);//链接数据库
+        String queryFlow = arg.getValue("queryFlow");
+        if (queryFlow != null) {
+            Routine.showProcess(queryFlow);
+            return;
+        }
         String mode = arg.getValue("mode");
         if (mode == null) {
             System.out.println("需要-m选项指定模式!");
             return;
         }
-        Routine.connect(arg);//链接数据库
         if(Routine.form==null) {
             System.out.println("数据库未连接！");
             return;
@@ -157,7 +162,7 @@ public class Main {
             ArrayList<ArrayList<String>>process=new ArrayList<>();
             ArrayList<String>s=new ArrayList<>();
             s.add("序号");
-            s.add("流程名称(Process)");
+            s.add("岗位(Post)");
             s.add("审核者(Auditor)");
             process.add(s);
             for(int i=0;i<sh.size();i++) {
@@ -170,6 +175,8 @@ public class Main {
             t.getTableFormat(process);
             t.showTable();
     }
+
+
     public static void test() {
         FinalProcess<String, String>sh=Routine.finalFlow(Routine.calcFlow(Routine.getProcess("业务接待"), "周明"),"周明");
         for(int i=0;i<sh.size();i++) {

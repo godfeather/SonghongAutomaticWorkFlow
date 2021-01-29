@@ -54,8 +54,6 @@ public class AutoFlow {
 			Audit.songhong.close();
 		}catch(Exception e){
 		}
-		Properties.reload();
-		Properties.loadProperties();
 		String driverType = Properties.getValue("driver");
 		resetWebDriver(driverType);
 		FinalProcess<String, String>sh = workFlow;

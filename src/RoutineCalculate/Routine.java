@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
 import Collection.FinalProcess;
+import Collection.TableFormat;
 import arguments.Args;
 
 public class Routine {
@@ -270,6 +271,34 @@ public class Routine {
 			str[i]=flow.get(i);
 		}
 		return str;
+	}
+	/**
+	 * 根据流程名称关键字显示流程
+	 * @param keyword 关键字
+	 */
+	public static void showProcess(String keyword) {
+		try {
+		    String sql = "select name,flow from flow where name like '%" + keyword + "%';";
+			ResultSet result = form.executeQuery(sql);
+			TableFormat t=new TableFormat();
+			ArrayList<ArrayList<String>>process=new ArrayList<>();
+			ArrayList<String>s=new ArrayList<>();
+			s.add("流程名称(Name)");
+			s.add("流程序列(Queue)");
+			process.add(s);
+			while (result.next()) {
+			    String name = result.getString("name");
+				String flow = result.getString("flow");
+				ArrayList<String>p=new ArrayList<>();
+				p.add(name);
+				p.add(flow);
+				process.add(p);
+			}
+			t.getTableFormat(process);
+			t.showTable();
+		} catch (SQLException throwables) {
+			System.out.println("查询时错误");
+		}
 	}
 	public static Statement connect(Args args) {
 		String ipAndPort=args.getValue("connectionString") == null ? defaultHost : args.getValue("connectionString");
