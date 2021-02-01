@@ -5,3 +5,4 @@ javac -cp src:mssql-jdbc-7.4.1.jre8.jar:gson-2.8.0.jar:mysql-connector-java-8.0.
 cd jar-temp
 jar -cmf ../META-INF/MANIFEST.MF ../out/release.jar ./*
 cd ..
+cp needed/autoflow.sh out
